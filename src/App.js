@@ -1,24 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import ProductCard from './components/ProductCard';
+import ProductSearch from './components/ProductSearch';
+import NavBar from './components/NavBar';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [term, setTerm] = useState('');
+
+useEffect(() => {
+  getData();
+}, []);
+
+const getData = async () => {
+  fetch('/api/products')
+  .then(res => res.json())
+  .then((result) => {
+    setProducts(result);
+  }).then(
+  fetch('/api/categories')
+  .then(res => res.json())
+  .then((result) => {
+      setCategories(result);
+  })).then(setIsLoading(false))
+};
+
+return (
+  <div>
+    <NavBar/>
+  <ProductSearch searchText={(text) => setTerm(text)} />
+  {!isLoading && products.length === 0 && <h1 className="text-5xl text-center mx-auto mt-32">No Products Found</h1> }
+
+  {isLoading ? <h1 className="text-6xl text-center mx-auto mt-32">Loading...</h1> : <div className="grid grid-cols-1 px-6">
+    {products.filter(product => product.name.toUpperCase().includes(term.toUpperCase()) ||
+    product.category.toUpperCase().includes(term.toUpperCase()) || product.store.toUpperCase().includes(term.toUpperCase()))
+    .map(product => (
+      <ProductCard key={product.id} product={product} />
+      ))}
+      </div>}
     </div>
   );
 }
