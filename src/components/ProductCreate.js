@@ -26,7 +26,7 @@ const ProductCreate = ({submitProduct, categories}) => {
                 {categories.map((category, index) => <option  key={index} value={category.name}>{category.name}</option>)}
                 </select>
             </div>
-            <button className="asbolute  bg-green-500 p-2 rounded mt-10 text-gray-100">Submit</button>
+            <button className="asbolute  bg-blue-500 p-2 rounded mt-10 text-gray-100">Submit</button>
             </form>
         </div>
     )

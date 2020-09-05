@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import ProductSearch from './ProductSearch';
 
 const ProductCard = ({ product, searchText, addNew, changeWindow }) => {
