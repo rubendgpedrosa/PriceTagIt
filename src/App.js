@@ -8,7 +8,11 @@ const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 return (
   <div>
-    {isLoggedIn?<ProductListing/>:<LoginPage login={() => setIsLoggedIn(!isLoggedIn)}/>}
+    {isLoggedIn?<ProductListing/>:
+    <div><LoginPage login={() => setIsLoggedIn(!isLoggedIn)}/>
+    <footer class='w-full text-center fixed bottom-0 bg-blue-500 text-gray-100 p-4'>
+      Price Tag It &copy;
+    </footer></div>}
   </div>
   );
 }
