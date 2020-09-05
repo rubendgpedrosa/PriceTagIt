@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import ProductCard from './components/ProductCard';
-import ProductSearch from './components/ProductSearch';
 import NavBar from './components/NavBar';
 
 function App() {
@@ -9,9 +8,9 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [term, setTerm] = useState('');
 
-useEffect(() => {
-  getData();
-}, []);
+  useEffect(() => {
+    getData().then(setIsLoading(false));
+  }, []);
 
 const getData = async () => {
   fetch('/api/products')
@@ -23,23 +22,24 @@ const getData = async () => {
   .then(res => res.json())
   .then((result) => {
       setCategories(result);
-  })).then(setIsLoading(false))
+  }))
 };
 
 return (
   <div>
-    <NavBar/>
-  <ProductSearch searchText={(text) => setTerm(text)} />
-  {!isLoading && products.length === 0 && <h1 className="text-5xl text-center mx-auto mt-32">No Products Found</h1> }
+    <NavBar searchText={(text) => setTerm(text)}/>
+	<div className="container mx-auto bg-white md:mt-16 h-full overflow-y-auto">
+    {!isLoading && products.length === 0 && <h1 className="text-5xl text-center mx-auto mt-32">No Products Found</h1> }
 
-  {isLoading ? <h1 className="text-6xl text-center mx-auto mt-32">Loading...</h1> : <div className="grid grid-cols-1 px-6">
-    {products.filter(product => product.name.toUpperCase().includes(term.toUpperCase()) ||
-    product.category.toUpperCase().includes(term.toUpperCase()) || product.store.toUpperCase().includes(term.toUpperCase()))
-    .map(product => (
-      <ProductCard key={product.id} product={product} />
+    {isLoading ? <h1 className="text-6xl text-center mx-auto mt-32">Loading...</h1> : <div className="grid grid-cols-1 px-6">
+      {products.filter(product => product.name.toUpperCase().includes(term.toUpperCase()) ||
+      product.category.toUpperCase().includes(term.toUpperCase()) || product.store.toUpperCase().includes(term.toUpperCase()))
+      .map(product => (
+        <ProductCard key={product.id} product={product} />
       ))}
       </div>}
-    </div>
+	  </div>
+  </div>
   );
 }
 
