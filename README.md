@@ -1,9 +1,9 @@
-# Pixabay Image Gallery - React & Tailwind CSS 
+# Price tag it - React, Express & Tailwind CSS 
 
-Simple gallery with images from the pixabay API. Tailwind css is built into workflow with postcss and autoprefixer.
+Simple application that stores products information regarding pricing and discount prices using an Express server. Tailwind css is built into workflow with postcs and autoprefixer.
 
 ## Usage
-Add your Pixabay API key to .env - https://pixabay.com/api/docs/
+Add your products to your list and keep track of prices.
 
 ```
 # Install dependencies
@@ -14,4 +14,7 @@ npm start
 
 # Build CSS and assets
 npm run build
-```# pricetagit
+
+#Start Express server
+node ./node_server/server.js
+```
