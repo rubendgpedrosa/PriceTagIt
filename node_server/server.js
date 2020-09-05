@@ -40,7 +40,7 @@ app.get('/api/products', (req, res) => {
   connection.query('SELECT * FROM products;', function (err, rows, fields) {
     if (err) throw err
   //Prints the rows resulted from previous query
-    res.json(rows);
+    res.json(rows.reverse());
   })
 });
 

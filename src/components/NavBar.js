@@ -11,7 +11,7 @@ const ProductCard = ({ product, searchText, addNew, changeWindow }) => {
         </svg>
         <span className="font-semibold text-xl tracking-tight">Price Tag IT</span>
         </div>
-        <button onClick={changeWindow} className="bg-blue-500 text-blue-100 font-bold py-2 px-4 rounded inline-flex items-center">
+        <button onClick={changeWindow} className="focus:outline-none bg-blue-500 text-blue-100 font-bold py-2 px-4 rounded-full inline-flex items-center">
         {!addNew?<svg className="fill-current w-4 h-4 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /> </svg>:
         <svg className="fill-current w-4 h-4 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /> </svg>}
         <span>{addNew ? 'Products':'Add New'}</span>

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-const ProductCreate = ({submitProduct, categories, changeWindow}) => {
+const ProductCreate = ({submitProduct, categories}) => {
     const [emptyProduct, setEmptyProduct] = useState({name: '', regular_price: '', promotion_price: '', store: '', category: ''});
     const [newProduct, setNewProduct] = useState({name: '', regular_price: '', promotion_price: '', store: '', category: ''});
 
@@ -8,7 +8,6 @@ const ProductCreate = ({submitProduct, categories, changeWindow}) => {
         e.preventDefault();
         submitProduct(newProduct);
         setNewProduct(emptyProduct);
-        changeWindow();
     }
 
     return(
