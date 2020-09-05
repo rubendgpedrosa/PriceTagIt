@@ -2,8 +2,13 @@ import React from 'react';
 
 const ProductCard = ({ product }) => {
   return (
-    <div>
-      <div className="flex items-center max-w-sm border-solid border-l-8 border-blue-200 border mb-4 mx-auto flex p-4 rounded-md">
+    <div className="relative">
+      <div className="static flex items-center max-w-sm border-solid border-l-8 border-blue-200 border mb-4 mx-auto flex p-4 rounded-md">
+      <button className="absolute right-0 top-0 text-red-500 rounded-full p-2">
+        <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+        </svg>
+        </button>
         <div className="w-1/4 flex-shrink-0">
           <img className="border-solid border-2 border-gray-200 h-20 w-20 bg-white rounded-full p-2" alt="" src={'/img/'+product.src}/>
         </div>
