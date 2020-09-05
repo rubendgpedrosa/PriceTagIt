@@ -7,6 +7,7 @@ function App() {
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [term, setTerm] = useState('');
+  const [addNew, setAddNew] = useState(false);
 
   useEffect(() => {
     getData().then(setIsLoading(false));
@@ -27,7 +28,8 @@ const getData = async () => {
 
 return (
   <div>
-    <NavBar searchText={(text) => setTerm(text)}/>
+    <NavBar searchText={(text) => setTerm(text)} changeWindow={(changed => setAddNew(!addNew))}/>
+  {addNew? 'TOU':
 	<div className="container mx-auto bg-white md:mt-16 h-full overflow-y-auto">
     {!isLoading && products.length === 0 && <h1 className="text-5xl text-center mx-auto mt-32">No Products Found</h1> }
 
@@ -38,7 +40,7 @@ return (
         <ProductCard key={product.id} product={product} />
       ))}
       </div>}
-	  </div>
+	  </div>}
   </div>
   );
 }

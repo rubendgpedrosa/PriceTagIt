@@ -3,11 +3,6 @@ import React, { useState } from 'react';
 const ProductSearch = ({ searchText }) => {
   const [text, setText] = useState('');
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    searchText(text);
-  }
-
   const clearSubmition = () => {
     document.getElementById('search').value= null;
     setText('');
