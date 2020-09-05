@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import ProductSearch from './ProductSearch';
 
-const ProductCard = ({ product, searchText, changeWindow }) => {
+const ProductCard = ({ product, searchText, addNew, changeWindow }) => {
   return (
     <div>
         <nav className="flex items-center mt-0 fixed w-full z-10 top-0 justify-between flex-wrap bg-blue-500 p-4 shadow">
@@ -11,9 +11,12 @@ const ProductCard = ({ product, searchText, changeWindow }) => {
         </svg>
         <span className="font-semibold text-xl tracking-tight">Price Tag IT</span>
         </div>
-        <button onClick={changeWindow} className="bg-transparent hover:text-blue-700 text-blue-100 py-2 px-4 rounded inline-flex items-center">
-        <span>Add New</span>
+        <button onClick={changeWindow} className="bg-blue-500 hover:bg-blue-400 text-blue-100 font-bold py-2 px-4 rounded inline-flex items-center">
+        {!addNew?<svg className="fill-current w-4 h-4 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /> </svg>:
+        <svg className="fill-current w-4 h-4 mr-2 ml-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /> </svg>}
+        <span>{addNew ? 'Products':'Add New'}</span>
         </button>
+
         </nav>
         <ProductSearch searchText={(text) => searchText(text)} />
     </div>
