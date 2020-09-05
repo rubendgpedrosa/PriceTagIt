@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 const ProductCreate = ({submitProduct, categories}) => {
-    const [emptyProduct, setEmptyProduct] = useState({name: '', regular_price: '', promotion_price: '', store: '', category: ''});
+    const [emptyProduct] = useState({name: '', regular_price: '', promotion_price: '', store: '', category: ''});
     const [newProduct, setNewProduct] = useState({name: '', regular_price: '', promotion_price: '', store: '', category: ''});
 
     const onSubmit = (e) => {

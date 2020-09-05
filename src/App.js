@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ProductCard from './components/ProductCard';
 import NavBar from './components/NavBar';
 import ProductCreate from './components/ProductCreate';
+import ProductAlert from './components/ProductAlert';
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -9,6 +10,8 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [term, setTerm] = useState('');
   const [addNew, setAddNew] = useState(false);
+  const [alert, setAlert] = useState(false);
+  const[alertType, setAlertType] = useState();
 
   useEffect(() => {
     getData().then(setIsLoading(false));
@@ -42,7 +45,11 @@ const createProductHandler = async (product) => {
     product.id = response.insertId;
     tempArray.unshift(product);
     setProducts(tempArray);
-    console.table(products);
+    setAlertType(1);
+    setAlert(true);
+    setTimeout(function(){
+      setAlert(false);
+    },3000);
   })
 };
 
@@ -57,7 +64,13 @@ const deleteItemHandler = async (product) => {
     return response.json();
   }).then(function() {
     setProducts(products.filter(p => p.name !== product.name));
-  })
+    setAlertType(0);
+    setAlert(true);
+    setTimeout(function(){
+      setAlert(false);
+    },3000);
+  });
+  
 };
 
 return (
@@ -74,6 +87,7 @@ return (
       ))}
       </div>)}
 	  </div>
+    {alert && <ProductAlert created={alertType}/>}
   </div>
   );
 }
