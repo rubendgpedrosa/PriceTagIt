@@ -42,6 +42,20 @@ const submitProductHandler = async (product) => {
   })
 };
 
+const deleteItemHandler = async (product) => {
+  fetch('/api/products/'+product.id, {
+    method: 'delete',
+    body: JSON.stringify({
+      product: product
+    }),
+    headers: {"Content-Type": "application/json"}
+  }).then(function(response) {
+    return response.json();
+  }).then(function() {
+    //console.log('Created Gist:', data.html_url);
+  })
+};
+
 return (
   <div>
     <NavBar searchText={(text) => setTerm(text)} addNew={addNew} changeWindow={(changed => setAddNew(!addNew))}/>
@@ -52,7 +66,7 @@ return (
       {products.filter(product => product.name.toUpperCase().includes(term.toUpperCase()) ||
       product.category.toUpperCase().includes(term.toUpperCase()) || product.store.toUpperCase().includes(term.toUpperCase()))
       .map(product => (
-        <ProductCard key={product.id} product={product} />
+        <ProductCard key={product.id} product={product} deleteItem={(product) => deleteItemHandler(product)} />
       ))}
       </div>)}
 	  </div>
