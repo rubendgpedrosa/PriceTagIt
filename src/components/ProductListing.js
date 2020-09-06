@@ -49,7 +49,7 @@ const createProductHandler = async (product) => {
     setAlert(true);
     setTimeout(function(){
       setAlert(1);
-    },3000);
+    },2000);
   })
 };
 
@@ -68,7 +68,7 @@ const deleteItemHandler = async (product) => {
     setAlert(true);
     setTimeout(function(){
       setAlert(1);
-    },3000);
+    },2000);
   });
   
 };

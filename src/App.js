@@ -5,6 +5,7 @@ import LoginPage from './components/LoginPage';
 
 function App() {
 const [isLoggedIn, setIsLoggedIn] = useState(false);
+const [errorAlert, setErrorAlert] = useState(false);
 
 //Login fetch POST request sending login data.
 const login = async (loginInformation) => {
@@ -15,19 +16,23 @@ const login = async (loginInformation) => {
       loginInformation: loginInformation
     }),
     headers: {"Content-Type": "application/json"}
-  }).then(function(response) {
-    return response.json();
-  }).then(function(response) {
-    setIsLoggedIn(true);
+  }).then(res => res.json())
+  .then((result) => {
+    setIsLoggedIn(result);
+  }).catch((response) => {
+    setErrorAlert(true);
+    setTimeout(function(){
+      setErrorAlert(false);
+    },2000);
   })
 }
 
 return (
   <div>
     {isLoggedIn?<ProductListing/>:
-    <div><LoginPage login={(loginInformation) => setIsLoggedIn(true)}/>
-    <footer className='w-full text-center fixed bottom-0 bg-blue-500 text-gray-100 p-4'>
-      Price Tag It &copy;
+    <div><LoginPage login={(loginInformation) => login(loginInformation)} errorAlert={errorAlert}/>
+    <footer className='w-full text-center fixed bottom-0 text-gray-100 bg-blue-500 p-3'>
+      <span className=" font-bold">Price Tag It &copy;</span> | <span className="font-bold cursor-pointer hover:underline">Icon Credits</span>
     </footer></div>}
   </div>
   );

@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+var session = require('express-session');
 const mysql = require('mysql')
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -23,8 +24,14 @@ connection.connect((err) => {
 // Parse JSON bodies (as sent by API clients)
 app.use(express.json());
 
+app.use(session({
+	secret: 'secret',
+	resave: true,
+	saveUninitialized: true
+}));
+
 // console.log that your server is up and running
-app.listen(port, () => console.log(`Listening on port ${port}`));
+app.listen(port);
 
 // GET route for categories
 app.get('/api/categories', (req, res) => {
@@ -63,8 +70,22 @@ app.delete('/api/products/:id', (req, res) => {
 });
 
 //Login routes
-app.post('/api/auth/login', (req, res) => {
-  console.log(req.body.loginInformation);
+app.post('/api/auth/login', (request, response) => {
+  if (request.body.loginInformation.email && request.body.loginInformation.password) {
+		connection.query('SELECT * FROM accounts WHERE email = ? AND password = ?', [request.body.loginInformation.email, request.body.loginInformation.password], function(error, results, fields) {
+			if (results.length > 0) {
+				request.session.loggedin = true;
+        request.session.email = request.body.loginInformation.email;
+        response.send(true);
+			} else {
+				response.send('Incorrect Username and/or Password!');
+			}			
+			response.end();
+		});
+	} else {
+		response.send('Please enter Username and Password!');
+		response.end();
+	}
   /*var sql = `INSERT INTO products (name, regular_price, promotion_price, category, store, src) VALUES (?, ?, ?, ?, ?, ?)`;
   connection.query(sql, [req.body.product.name, req.body.product.regular_price.replace(",", "."), req.body.product.promotion_price.replace(",", "."), req.body.product.category, req.body.product.store, req.body.product.src], function (err, rows, fields) {
     if (err) throw err

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-const LoginPage = ({ login }) => {
+const LoginPage = ({ login, errorAlert }) => {
     const [loginInformation, setLoginInformation] = useState({email: '', password: ''});
 
     return (
@@ -42,14 +42,24 @@ const LoginPage = ({ login }) => {
                 <button onClick={() => login(loginInformation)} className="bg-blue-500 hover:bg-blue-400 focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
                 Sign In
                 </button>
-                <div onClick={() => console.log('Forgot Password')} className=" float-right py-2 text-blue-500 hover:text-blue-700 active:text-blue-700">
+                <div onClick={() => console.log('Forgot Password')} className="cursor-pointer float-right py-2 text-blue-500 hover:text-blue-700 active:text-blue-700">
                     Forgot Password?
                 </div>
             </div>
             </div>
-            <div className="text-gray-600 py-6 text-center">Don't have an account? <span className="text-blue-500 active:text-blue-700 hover:text-blue-700" onClick={() => console.log('newAccount')}>Sign up</span>.</div>
+            <div className="text-gray-600 py-6 text-center">Don't have an account? <span className="cursor-pointer text-blue-500 active:text-blue-700 hover:text-blue-700" onClick={() => console.log('newAccount')}>Sign up</span>.</div>
         </form>
         </div>
+        {errorAlert && <div>
+        <div className="alert-toast fixed bottom-0 right-0 m-8 mb-16 w-5/6 md:w-full max-w-sm">
+        <label className="close cursor-pointer flex items-start justify-between w-full p-2 bg-red-500 h-12 text-center items-center rounded shadow-lg text-white" title="close">
+            <div><p className="py-2 pl-4">{loginInformation.email && loginInformation.password ? 'Incorrect Username and/or Password!':'Please enter Username and Password!'}</p></div>
+            <svg className="w-8 h-8 pr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        </label>
+        </div>
+        </div>}
     </div>
     )
 }
