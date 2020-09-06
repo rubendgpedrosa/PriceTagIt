@@ -14,16 +14,26 @@ function App({loggedUser}) {
   const [alertType, setAlertType] = useState(10);
 
   useEffect(() => {
-    getData().then(setIsLoading(false));
-  }, []);
+    if(loggedUser !== undefined){
+      getData().then(setIsLoading(false));
+    }
+  }, [loggedUser]);
 
-const getData = async () => {
-  await fetch('/api/products')
+  const getData = async () => {
+  await fetch('/api/products', {headers: new Headers({
+    'Authorization': 'Bearer ' + loggedUser, 
+    'Content-Type': 'application/json'
+    }), 
+    })
   .then(res => res.json())
   .then((result) => {
     setProducts(result);
   }).then(
-  fetch('/api/categories')
+  fetch('/api/categories', {headers: new Headers({
+    'Authorization': 'Bearer ' + loggedUser, 
+    'Content-Type': 'application/json'
+  }), 
+})
   .then(res => res.json())
   .then((result) => {
       setCategories(result);
@@ -39,7 +49,7 @@ const createProductHandler = async (product) => {
     body: JSON.stringify({
       product: product
     }),
-    headers: {"Content-Type": "application/json"}
+    headers: new Headers({"Content-Type": "application/json", 'Authorization': 'Bearer ' + loggedUser})
   }).then(function(response) {
     return response.json();
   }).then(function(response) {
@@ -61,7 +71,7 @@ const deleteItemHandler = async (product) => {
     body: JSON.stringify({
       product: product
     }),
-    headers: {"Content-Type": "application/json"}
+    headers: new Headers({"Content-Type": "application/json", 'Authorization': 'Bearer ' + loggedUser})
   }).then(function(response) {
     return response.json();
   }).then(function() {

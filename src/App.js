@@ -17,11 +17,11 @@ const login = async (loginInformation) => {
       loginInformation: loginInformation
     }),
     headers: {"Content-Type": "application/json"}
-  }).then(res => res.json())
+  }).then(res => {return res.json()})
   .then((result) => {
     setIsLoggedIn(true);
-    setLoggedUser(result[0]);
-  }).catch((response) => {
+    setLoggedUser(result.token);
+  }).catch(async (response) => {
     setErrorAlert(true);
     setTimeout(function(){
       setErrorAlert(false);

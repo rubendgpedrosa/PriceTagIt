@@ -26,6 +26,7 @@ yarn-error.log*
 
 # dependencies
 /node_modules
+/node_server/node_modules
 /.pnp
 .pnp.js
 

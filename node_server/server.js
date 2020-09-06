@@ -6,6 +6,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 const authentication = require('./middleware-authentication');
 const config = require('./config.js');
+const bcrypt = require('bcrypt');
 
 var connection = mysql.createConnection({
   host: '172.17.0.2',
@@ -73,10 +74,12 @@ app.delete('/api/products/:id', authentication("products"), (req, res) => {
 //Login routes
 app.post('/api/auth/login', (request, response) => {
   if (request.body.loginInformation.email && request.body.loginInformation.password) {
-		connection.query('SELECT * FROM accounts WHERE email = ? AND password = ?', [request.body.loginInformation.email, request.body.loginInformation.password], function(error, results, fields) {
-			if (results.length > 0) {
+    var sql =`SELECT * FROM accounts WHERE email = ?;`;
+    connection.query(sql, [request.body.loginInformation.email], function (err, rows, fields) {
+      if (err) console.log(err)
+      bcrypt.compare(request.body.loginInformation.password, rows[0].password, function(err, res) { if(res) { 
         const payload = {
-          id: results[0].id,
+          id: rows[0].id,
           email: request.body.loginInformation.email,
           password: request.body.loginInformation.password,
           scopes: ["products", "categories"]
@@ -84,22 +87,23 @@ app.post('/api/auth/login', (request, response) => {
       
         const token = jwt.sign(payload, config.JWT_SECRET);
         response.send({token: token});
-			} else {
-				response.send('Incorrect Username and/or Password!');
-			}			
-			response.end();
-		});
-	} else {
-		response.send('Please enter Username and Password!');
-		response.end();
-	}
+        response.end();
+      } else { 
+        response.send('Incorrect Username and/or Password!');
+      }
+      });
+    });
+  };
 });
+
 
 app.post('/api/auth/register', (request, response) => {
   var sql = `INSERT INTO accounts (email, password) VALUES (?, ?)`;
-  connection.query(sql, [request.body.loginInformation.email, request.body.loginInformation.password], function (err, rows, fields) {
-        response.send(rows);
-			  response.end();
-    });
+  bcrypt.hash(request.body.loginInformation.password, 10, function(err, hash) {
+    connection.query(sql, [request.body.loginInformation.email, hash], function (err, rows, fields) {
+      response.send(rows);
+      response.end();
+  });
+  });
 });
 

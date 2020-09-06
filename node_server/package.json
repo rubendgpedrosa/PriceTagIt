@@ -9,6 +9,7 @@
     "mysql": "^2.18.1"
   },
   "devDependencies": {
+    "bcrypt": "^3.0.0",
     "jsonwebtoken": "^8.5.1"
   },
   "scripts": {
