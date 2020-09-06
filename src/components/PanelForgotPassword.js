@@ -7,10 +7,7 @@ const PanelForgotPassword = ({landingPagePanels}) => {
         <div>
         <form className="mx-auto px1 w-full max-w-sm mb-12 pt-6">
             <div className="md:flex md:items-center mb-6">
-            <label className="block text-gray-700 font-bold text-xl md:text-right mb-1 md:mb-0  text-center">
-                Forgot your password?
-            </label>
-            <p className="text-gray-600 font-bold pb-6 text-xs text-center">Don't worry, just type your email and click send!</p>
+
             <div className="md:w-1/3">
                 <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
                 Email
@@ -21,6 +18,7 @@ const PanelForgotPassword = ({landingPagePanels}) => {
             </div>
             </div>
             <div className="md:flex md:items-center">
+            <div className="md:w-1/3"></div>
             <div className="md:w-2/3">
                 <button className="bg-blue-500 hover:bg-blue-400 focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
                 Send

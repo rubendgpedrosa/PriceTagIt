@@ -4,7 +4,7 @@ import PanelForgotPassword from './PanelForgotPassword';
 import PanelSignUp from './PanelSignUp';
 
 const LandingPage = ({ login, errorAlert }) => {
-    const [landingPagePanels, setLandingPagePanels] = useState('signUp');
+    const [landingPagePanels, setLandingPagePanels] = useState('login');
 
     const renderSwitch =() => {
         switch(landingPagePanels) {

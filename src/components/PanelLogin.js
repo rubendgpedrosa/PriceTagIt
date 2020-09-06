@@ -37,7 +37,7 @@ const LoginPanel = ( {login, errorAlert, forgotPassword, signUp} ) => {
                 </div>
             </div>
             </div>
-            <div className="text-gray-600 py-6 text-center">Don't have an account? <span className="cursor-pointer text-blue-500 active:text-blue-700 hover:text-blue-700" onClick={() => signUp()}>Sign up</span>.</div>
+            <div className="md:pl-24 text-gray-600 py-6 text-center">Don't have an account? <span className="cursor-pointer text-blue-500 active:text-blue-700 hover:text-blue-700" onClick={() => signUp()}>Sign up</span>.</div>
         </form>
         {errorAlert && <div>
         <div className="alert-toast fixed bottom-0 right-0 m-8 mb-16 w-5/6 md:w-full max-w-sm">
