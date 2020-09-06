@@ -72,9 +72,9 @@ app.post('/api/auth/login', (request, response) => {
   if (request.body.loginInformation.email && request.body.loginInformation.password) {
 		connection.query('SELECT * FROM accounts WHERE email = ? AND password = ?', [request.body.loginInformation.email, request.body.loginInformation.password], function(error, results, fields) {
 			if (results.length > 0) {
-				request.session.loggedin = true;
+				request.session.loggedin = results;
         request.session.email = request.body.loginInformation.email;
-        response.send(true);
+        response.send(results);
 			} else {
 				response.send('Incorrect Username and/or Password!');
 			}			
@@ -89,7 +89,6 @@ app.post('/api/auth/login', (request, response) => {
 app.post('/api/auth/register', (request, response) => {
   var sql = `INSERT INTO accounts (email, password) VALUES (?, ?)`;
   connection.query(sql, [request.body.loginInformation.email, request.body.loginInformation.password], function (err, rows, fields) {
-        console.log(request.body.loginInformation);
         response.send(rows);
 			  response.end();
     });

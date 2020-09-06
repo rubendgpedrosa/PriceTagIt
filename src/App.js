@@ -5,6 +5,7 @@ import LandingPage from './components/LandingPage';
 
 function App() {
 const [isLoggedIn, setIsLoggedIn] = useState(false);
+const [loggedUser, setLoggedUser] = useState();
 const [errorAlert, setErrorAlert] = useState(false);
 
 //Login fetch POST request sending login data.
@@ -18,7 +19,9 @@ const login = async (loginInformation) => {
     headers: {"Content-Type": "application/json"}
   }).then(res => res.json())
   .then((result) => {
-    setIsLoggedIn(result);
+    setIsLoggedIn(true);
+    console.log(result[0]);
+    setLoggedUser(result);
   }).catch((response) => {
     setErrorAlert(true);
     setTimeout(function(){
@@ -30,7 +33,7 @@ const login = async (loginInformation) => {
 return (
   <div>
     {isLoggedIn?<ProductListing/>:
-    <div><LandingPage login={(loginInformation) => login(loginInformation)} errorAlert={errorAlert}/>
+    <div><LandingPage login={(loginInformation) => login(loginInformation)} errorAlert={errorAlert} setLoggedUser={(user) => setLoggedUser(user)}/>
     <footer className='w-full text-center fixed bottom-0 text-gray-100 bg-blue-500 p-3'>
       <span className=" font-bold">Price Tag It &copy;</span> | <span className="font-bold cursor-pointer hover:underline">Icon Credits</span>
     </footer></div>}
