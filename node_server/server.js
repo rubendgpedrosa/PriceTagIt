@@ -7,6 +7,14 @@ const port = process.env.PORT || 5000;
 const authentication = require('./middleware-authentication');
 const config = require('./config.js');
 const bcrypt = require('bcrypt');
+const nodemailer = require('nodemailer');
+let transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+      user: config.EMAIL,
+      pass: config.PASSWORD
+  }
+});
 
 var connection = mysql.createConnection({
   host: '172.17.0.2',
@@ -103,6 +111,14 @@ app.post('/api/auth/register', (request, response) => {
   var sql = `INSERT INTO accounts (email, password) VALUES (?, ?)`;
   bcrypt.hash(request.body.loginInformation.password, 10, function(err, hash) {
     connection.query(sql, [request.body.loginInformation.email, hash], function (err, rows, fields) {
+
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+      });
       response.send(rows);
       response.end();
   });
