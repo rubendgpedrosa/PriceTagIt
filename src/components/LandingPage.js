@@ -1,8 +1,20 @@
 import React, {useState} from 'react';
-import LoginPanel from './LoginPanel';
+import PanelLogin from './PanelLogin';
+import PanelForgotPassword from './PanelForgotPassword';
+import PanelSignUp from './PanelSignUp';
 
 const LandingPage = ({ login, errorAlert }) => {
-    const [landingPagePanels, setLandingPagePanels] = useState('login');
+    const [landingPagePanels, setLandingPagePanels] = useState('forgotPassword');
+
+    const renderSwitch =() => {
+        switch(landingPagePanels) {
+            case 'forgotPassword':
+            return <PanelForgotPassword/>;
+            case 'signUp':
+            return <PanelSignUp/>;
+            default: return <PanelLogin login={login} errorAlert={errorAlert} forgotPassword={() => setLandingPagePanels('forgotPassword')} signUp={() => setLandingPagePanels('signUp')}/>;
+        }
+      }
 
     return (
         <div className="h-full my-10 overflow-hidden flex items-center justify-center">
@@ -16,7 +28,7 @@ const LandingPage = ({ login, errorAlert }) => {
                 <p className="text-gray-600 text-xl">A simple and easy way to keep track of all your discounts.</p>
                 </div>
             </div>
-            <LoginPanel login={login} errorAlert={errorAlert} forgotPassword={() => setLandingPagePanels('forgotPassword')} signUp={() => setLandingPagePanels('signUp')}/>
+             {renderSwitch()}
         </div>
     </div>
     )
