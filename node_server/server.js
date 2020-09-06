@@ -8,6 +8,7 @@ const authentication = require('./middleware-authentication');
 const config = require('./config.js');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
+
 let transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -108,20 +109,73 @@ app.post('/api/auth/login', (request, response) => {
 });
 
 app.post('/api/auth/register', (request, response) => {
-  var sql = `INSERT INTO accounts (email, password) VALUES (?, ?)`;
-  bcrypt.hash(request.body.loginInformation.password, 10, function(err, hash) {
-    connection.query(sql, [request.body.loginInformation.email, hash], function (err, rows, fields) {
-
-      transporter.sendMail(mailOptions, function(error, info){
-        if (error) {
-            console.log(error);
-        } else {
-            console.log('Email sent: ' + info.response);
-        }
+  var sql = `INSERT INTO accounts (email, password) VALUES (?, ?);`;
+  var sqlCheck = `SELECT * FROM accounts WHERE email = ?;`
+  connection.query(sqlCheck, [request.body.loginInformation.email], function (err, rows, fields) {
+    if(rows.length <= 0){
+      bcrypt.hash(request.body.loginInformation.password, 10, function(err, hash) {
+        connection.query(sql, [request.body.loginInformation.email, hash], function (err, rows, fields) {
+          var mailOptions = {
+              from: 'pricetagitapp@gmail.com',
+              to: request.body.loginInformation.email,
+              name: 'Price Tag It',
+              subject: 'Price Tag It - Account Created',
+              html:'<div style="margin: auto; border-radius: 5px; padding: 20px; padding-bottom: 50px; text-align: center; width: 50%;"><h2 style="color: #4a5568;">Welcome to Price Tag It!</h2><p style="color: #4a5568;">Your account has been created and is ready to be used!</p style="color: #4a5568;">Get on our page and start creating your discounted products list.</span></div>',
+            };
+          transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+          });
+          response.send(rows);
+          response.end();
       });
-      response.send(rows);
-      response.end();
-  });
+      });
+    }else{
+      response.send(401);
+    }
   });
 });
+
+app.post('/api/auth/forgotpassword', (request, response) => {
+  //var sql = `UPDATE accounts SET password = ? WHERE email = ?`;
+  var mailOptions = {
+    from: 'pricetagitapp@gmail.com',
+    to: request.body.email,
+    name: 'Price Tag It',
+    subject: 'Price Tag It - Password Reset',
+    html:'<div style="margin: auto; border-radius: 5px; padding: 20px; padding-bottom: 50px; text-align: center; width: 50%;"><h2 style="color: #4a5568;">Hello from Price Tag It!</h2><p style="color: #4a5568;">There has been a request to reset your account password by you (or someone else).</p style="color: #4a5568;">If you did not request this, please ignore this email.</span></div>',
+  };
+    transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+        console.log(error);
+    } else {
+      console.log('Email password sent: ' + info.response);
+    }
+  });
+});
+
+  /*connection.query(sql, [request.body.loginInformation.email], function (err, rows, fields) {
+    if (err) console.log(err)
+    if(rows.length > 0){
+    bcrypt.compare(request.body.loginInformation.password, rows[0].password, function(err, res) { if(res) { 
+      const payload = {
+        id: rows[0].id,
+        email: request.body.loginInformation.email,
+        password: request.body.loginInformation.password,
+        scopes: ["products", "categories"]
+      };
+    
+      const token = jwt.sign(payload, config.JWT_SECRET);
+      response.send({token: token});
+      response.end();
+    } else { 
+      response.send('Incorrect Username and/or Password!');
+    }
+    });}else{
+      console.log('No account found!');
+    }
+  });*/
 
