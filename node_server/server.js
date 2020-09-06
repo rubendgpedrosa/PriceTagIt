@@ -41,7 +41,7 @@ app.get('/api/categories', (req, res) => {
 
 // GET, POST and DELETE routes for products
 app.get('/api/products', (req, res) => {
-  console.log(req.headers);
+  console.log(req.headers.authorization);
 
   connection.query('SELECT * FROM products;', function (err, rows, fields) {
     if (err) throw err
