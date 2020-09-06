@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import ProductListing from './components/ProductListing';
-import LoginPage from './components/LoginPage';
+import LandingPage from './components/LandingPage';
 
 
 function App() {
@@ -30,7 +30,7 @@ const login = async (loginInformation) => {
 return (
   <div>
     {isLoggedIn?<ProductListing/>:
-    <div><LoginPage login={(loginInformation) => login(loginInformation)} errorAlert={errorAlert}/>
+    <div><LandingPage login={(loginInformation) => login(loginInformation)} errorAlert={errorAlert}/>
     <footer className='w-full text-center fixed bottom-0 text-gray-100 bg-blue-500 p-3'>
       <span className=" font-bold">Price Tag It &copy;</span> | <span className="font-bold cursor-pointer hover:underline">Icon Credits</span>
     </footer></div>}
