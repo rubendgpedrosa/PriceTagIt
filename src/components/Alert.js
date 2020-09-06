@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ProductAlert = ({created}) => {
+const Alert = ({created}) => {
     return (
     <div className="alert-toast fixed bottom-0 right-0 m-8 w-5/6 md:w-full max-w-sm">
     <label className="close cursor-pointer flex items-start justify-between w-full p-2 bg-green-500 h-12 text-center items-center rounded shadow-lg text-white" title="close">
@@ -13,4 +13,4 @@ const ProductAlert = ({created}) => {
     )
 }
 
-export default ProductAlert;
+export default Alert;

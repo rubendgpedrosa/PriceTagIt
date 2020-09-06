@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ProductCard from './ProductCard';
 import NavBar from './NavBar';
 import ProductCreate from './ProductCreate';
-import ProductAlert from './ProductAlert';
+import Alert from './Alert';
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -11,7 +11,7 @@ function App() {
   const [term, setTerm] = useState('');
   const [addNew, setAddNew] = useState(false);
   const [alert, setAlert] = useState(false);
-  const [alertType, setAlertType] = useState();
+  const [alertType, setAlertType] = useState(10);
 
   useEffect(() => {
     getData().then(setIsLoading(false));
@@ -48,7 +48,7 @@ const createProductHandler = async (product) => {
     setAlertType(1);
     setAlert(true);
     setTimeout(function(){
-      setAlert(false);
+      setAlert(1);
     },3000);
   })
 };
@@ -67,7 +67,7 @@ const deleteItemHandler = async (product) => {
     setAlertType(0);
     setAlert(true);
     setTimeout(function(){
-      setAlert(false);
+      setAlert(1);
     },3000);
   });
   
@@ -87,7 +87,7 @@ return (
       ))}
       </div>)}
 	  </div>
-    {alert && <ProductAlert created={alertType}/>}
+    {alert && <Alert created={alertType}/>}
   </div>
   );
 }

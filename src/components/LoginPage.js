@@ -1,7 +1,8 @@
-import React from 'react';
-import Background from '../background.png';
+import React, {useState} from 'react';
 
 const LoginPage = ({ login }) => {
+    const [loginInformation, setLoginInformation] = useState({email: '', password: ''});
+
     return (
         <div className="h-full my-10 overflow-hidden flex items-center justify-center">
         <div className="absolute top-0 bg-blue-500 w-full py-20" style={{zIndex: -10}}></div>
@@ -22,7 +23,7 @@ const LoginPage = ({ login }) => {
                 </label>
             </div>
             <div className="md:w-2/3">
-                <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text"/>
+                <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" value={loginInformation.email} onChange={event => setLoginInformation({...loginInformation, email: event.target.value})}/>
             </div>
             </div>
             <div className="md:flex md:items-center mb-6">
@@ -32,13 +33,13 @@ const LoginPage = ({ login }) => {
                 </label>
             </div>
             <div className="md:w-2/3">
-                <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="password"/>
+                <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="password" value={loginInformation.password} onChange={event => setLoginInformation({...loginInformation, password: event.target.value})}/>
             </div>
             </div>
             <div className="md:flex md:items-center">
             <div className="md:w-1/3"></div>
             <div className="md:w-2/3">
-                <button onClick={() => login()} className="bg-blue-500 hover:bg-blue-400 focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
+                <button onClick={() => login(loginInformation)} className="bg-blue-500 hover:bg-blue-400 focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
                 Sign In
                 </button>
                 <div onClick={() => console.log('Forgot Password')} className=" float-right py-2 text-blue-500 hover:text-blue-700 active:text-blue-700">
@@ -48,7 +49,6 @@ const LoginPage = ({ login }) => {
             </div>
             <div className="text-gray-600 py-6 text-center">Don't have an account? <span className="text-blue-500 active:text-blue-700 hover:text-blue-700" onClick={() => console.log('newAccount')}>Sign up</span>.</div>
         </form>
-
         </div>
     </div>
     )

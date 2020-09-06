@@ -26,7 +26,7 @@ app.use(express.json());
 // console.log that your server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
-// create a GET route
+// GET route for categories
 app.get('/api/categories', (req, res) => {
   connection.query('SELECT * FROM categories;', function (err, rows, fields) {
     if (err) throw err
@@ -35,7 +35,7 @@ app.get('/api/categories', (req, res) => {
   })
 });
 
-// GET and POST routes for products
+// GET, POST and DELETE routes for products
 app.get('/api/products', (req, res) => {
   connection.query('SELECT * FROM products;', function (err, rows, fields) {
     if (err) throw err
@@ -61,3 +61,15 @@ app.delete('/api/products/:id', (req, res) => {
     res.json(rows);
   });
 });
+
+//Login routes
+app.post('/api/auth/login', (req, res) => {
+  console.log(req.body.loginInformation);
+  /*var sql = `INSERT INTO products (name, regular_price, promotion_price, category, store, src) VALUES (?, ?, ?, ?, ?, ?)`;
+  connection.query(sql, [req.body.product.name, req.body.product.regular_price.replace(",", "."), req.body.product.promotion_price.replace(",", "."), req.body.product.category, req.body.product.store, req.body.product.src], function (err, rows, fields) {
+    if (err) throw err
+  
+    res.json(rows);
+  });*/
+});
+
