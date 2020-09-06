@@ -4,7 +4,6 @@ const config = require('./config.js');
 
 module.exports = (credentials = []) => {
   return (req, res, next) => {
-    console.log("Authorization middleware");
     // Allow for a string OR array
     if (typeof credentials === "string") {
       credentials = [credentials];
@@ -13,7 +12,7 @@ module.exports = (credentials = []) => {
     // Find JWT in Headers
     const token = req.headers["authorization"];
     if (!token) {
-      return res.status(401).send("Sorry pal: access denied");
+      return res.status(401).send("Access denied");
     } else {
       // Validate JWT
       // Bearer yndujsoIn...

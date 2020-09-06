@@ -31,37 +31,41 @@ app.use(express.json());
 app.listen(port);
 
 // GET route for categories
-app.get('/api/categories', (req, res) => {
+app.get('/api/categories', authentication("categories"), (req, res) => {
   connection.query('SELECT * FROM categories;', function (err, rows, fields) {
-    if (err) throw err
-  
+    if (err) console.log(err)
     res.json(rows);
   })
 });
 
 // GET, POST and DELETE routes for products
-app.get('/api/products', (req, res) => {
-  console.log(req.headers.authorization);
-
-  connection.query('SELECT * FROM products;', function (err, rows, fields) {
-    if (err) throw err
+app.get('/api/products', authentication("products"), (req, res) => {
+  var sql=`SELECT * FROM products WHERE account_id = ?;`;
+  connection.query(sql, [jwt.verify(req.headers["authorization"].slice(7), config.JWT_SECRET, (err, decoded) => {
+    return decoded.id
+  })], function (err, rows, fields) {
+    if (err) console.log(err)
   //Prints the rows resulted from previous query
     res.json(rows.reverse());
   })
 });
 
-app.post('/api/products', (req, res) => {
+app.post('/api/products', authentication("products"), (req, res) => {
   var sql = `INSERT INTO products (name, regular_price, promotion_price, category, store, src, account_id) VALUES (?, ?, ?, ?, ?, ?, ?)`;
-  connection.query(sql, [req.body.product.name, req.body.product.regular_price.replace(",", "."), req.body.product.promotion_price.replace(",", "."), req.body.product.category, req.body.product.store, req.body.product.src, req.body.product.account_id], function (err, rows, fields) {
-    if (err) throw err
+  connection.query(sql, [req.body.product.name, req.body.product.regular_price.replace(",", "."), req.body.product.promotion_price.replace(",", "."), req.body.product.category, req.body.product.store, req.body.product.src, jwt.verify(req.headers["authorization"].slice(7), config.JWT_SECRET, (err, decoded) => {
+    return decoded.id
+  })], function (err, rows, fields) {
+    if (err) console.log(err)
     res.json(rows);
   });
 });
 
-app.delete('/api/products/:id', (req, res) => {
-  var sql = `DELETE FROM products WHERE id=?`;
-  connection.query(sql, [req.params.id], function (err, rows, fields) {
-    if (err) throw err
+app.delete('/api/products/:id', authentication("products"), (req, res) => {
+  var sql = `DELETE FROM products WHERE (id=? AND account_id=?)`;
+  connection.query(sql, [req.params.id, jwt.verify(req.headers["authorization"].slice(7), config.JWT_SECRET, (err, decoded) => {
+    return decoded.id
+  })], function (err, rows, fields) {
+    if (err) console.log(err)
     res.json(rows);
   });
 });
@@ -75,7 +79,7 @@ app.post('/api/auth/login', (request, response) => {
           id: results[0].id,
           email: request.body.loginInformation.email,
           password: request.body.loginInformation.password,
-          scopes: "products"
+          scopes: ["products", "categories"]
         };
       
         const token = jwt.sign(payload, config.JWT_SECRET);
