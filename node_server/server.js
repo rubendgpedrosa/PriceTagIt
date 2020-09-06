@@ -1,8 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
 const mysql = require('mysql')
 const app = express();
 const port = process.env.PORT || 5000;
+const authentication = require('./middleware-authentication');
+const config = require('./config.js');
 
 var connection = mysql.createConnection({
   host: '172.17.0.2',
@@ -38,6 +41,8 @@ app.get('/api/categories', (req, res) => {
 
 // GET, POST and DELETE routes for products
 app.get('/api/products', (req, res) => {
+  console.log(req.headers);
+
   connection.query('SELECT * FROM products;', function (err, rows, fields) {
     if (err) throw err
   //Prints the rows resulted from previous query
@@ -66,7 +71,15 @@ app.post('/api/auth/login', (request, response) => {
   if (request.body.loginInformation.email && request.body.loginInformation.password) {
 		connection.query('SELECT * FROM accounts WHERE email = ? AND password = ?', [request.body.loginInformation.email, request.body.loginInformation.password], function(error, results, fields) {
 			if (results.length > 0) {
-        response.send(results);
+        const payload = {
+          id: results[0].id,
+          email: request.body.loginInformation.email,
+          password: request.body.loginInformation.password,
+          scopes: "products"
+        };
+      
+        const token = jwt.sign(payload, config.JWT_SECRET);
+        response.send({token: token});
 			} else {
 				response.send('Incorrect Username and/or Password!');
 			}			
