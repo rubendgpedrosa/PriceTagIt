@@ -77,6 +77,7 @@ app.post('/api/auth/login', (request, response) => {
     var sql =`SELECT * FROM accounts WHERE email = ?;`;
     connection.query(sql, [request.body.loginInformation.email], function (err, rows, fields) {
       if (err) console.log(err)
+      if(rows.length > 0){
       bcrypt.compare(request.body.loginInformation.password, rows[0].password, function(err, res) { if(res) { 
         const payload = {
           id: rows[0].id,
@@ -91,11 +92,12 @@ app.post('/api/auth/login', (request, response) => {
       } else { 
         response.send('Incorrect Username and/or Password!');
       }
-      });
+      });}else{
+        response.send('No account found!');
+      }
     });
   };
 });
-
 
 app.post('/api/auth/register', (request, response) => {
   var sql = `INSERT INTO accounts (email, password) VALUES (?, ?)`;
