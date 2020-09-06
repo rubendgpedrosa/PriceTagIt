@@ -55,7 +55,6 @@ app.post('/api/products', (req, res) => {
   var sql = `INSERT INTO products (name, regular_price, promotion_price, category, store, src) VALUES (?, ?, ?, ?, ?, ?)`;
   connection.query(sql, [req.body.product.name, req.body.product.regular_price.replace(",", "."), req.body.product.promotion_price.replace(",", "."), req.body.product.category, req.body.product.store, req.body.product.src], function (err, rows, fields) {
     if (err) throw err
-  
     res.json(rows);
   });
 });
@@ -64,7 +63,6 @@ app.delete('/api/products/:id', (req, res) => {
   var sql = `DELETE FROM products WHERE id=?`;
   connection.query(sql, [req.params.id], function (err, rows, fields) {
     if (err) throw err
-  
     res.json(rows);
   });
 });
@@ -86,11 +84,14 @@ app.post('/api/auth/login', (request, response) => {
 		response.send('Please enter Username and Password!');
 		response.end();
 	}
-  /*var sql = `INSERT INTO products (name, regular_price, promotion_price, category, store, src) VALUES (?, ?, ?, ?, ?, ?)`;
-  connection.query(sql, [req.body.product.name, req.body.product.regular_price.replace(",", "."), req.body.product.promotion_price.replace(",", "."), req.body.product.category, req.body.product.store, req.body.product.src], function (err, rows, fields) {
-    if (err) throw err
-  
-    res.json(rows);
-  });*/
+});
+
+app.post('/api/auth/register', (request, response) => {
+  var sql = `INSERT INTO accounts (email, password) VALUES (?, ?)`;
+  connection.query(sql, [request.body.loginInformation.email, request.body.loginInformation.password], function (err, rows, fields) {
+        console.log(request.body.loginInformation);
+        response.send(rows);
+			  response.end();
+    });
 });
 

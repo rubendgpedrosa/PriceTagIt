@@ -3,6 +3,22 @@ import React, {useState} from 'react';
 const PanelSignUp = ({landingPagePanels}) => {
     const [newAccount, setNewAccount] = useState({email: '', password: ''});
 
+    const signUp = async (loginInformation) => {
+        //console.log(loginInformation);
+        fetch('/api/auth/register', {
+            method: 'post',
+            body: JSON.stringify({
+                loginInformation: newAccount
+            }),
+            headers: {"Content-Type": "application/json"}
+          }).then(res => res.json())
+          .then((result) => {
+            console.log(result);
+          }).catch((response) => {
+            console.log(response);
+          })
+      }
+
     return (
         <div>
         <form className="mx-auto px1 w-full max-w-sm mb-12 pt-10">
@@ -29,7 +45,7 @@ const PanelSignUp = ({landingPagePanels}) => {
             <div className="md:flex md:items-center">
             <div className="md:w-1/3"></div>
             <div className="md:w-2/3 mx-auto">
-                <button onClick={() => console.log(newAccount)} className="bg-blue-500 hover:bg-blue-400 focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
+                <button onClick={() => signUp()} className="bg-blue-500 hover:bg-blue-400 focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
                 Sign Up
                 </button>
                 <div className="text-gray-600 py-2 text-center float-right">Have an <span className="cursor-pointer text-blue-500 active:text-blue-700 hover:text-blue-700" onClick={() => landingPagePanels()}>Account</span>?</div>
