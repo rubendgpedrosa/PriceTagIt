@@ -4,7 +4,7 @@ import NavBar from './NavBar';
 import ProductCreate from './ProductCreate';
 import Alert from './Alert';
 
-function App() {
+function App({loggedUser}) {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -32,6 +32,8 @@ const getData = async () => {
 
 const createProductHandler = async (product) => {
   product.src = product.category+'.svg';
+  console.log(loggedUser);
+  product.account_id = loggedUser.id;
   fetch('/api/products', {
     method: 'post',
     body: JSON.stringify({

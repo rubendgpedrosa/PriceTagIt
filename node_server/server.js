@@ -1,9 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-var session = require('express-session');
 const mysql = require('mysql')
 const app = express();
-app.use(bodyParser.urlencoded({ extended: true }));
 const port = process.env.PORT || 5000;
 
 var connection = mysql.createConnection({
@@ -22,13 +20,9 @@ connection.connect((err) => {
   });
 
 // Parse JSON bodies (as sent by API clients)
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
-
-app.use(session({
-	secret: 'secret',
-	resave: true,
-	saveUninitialized: true
-}));
+//app.use(express.session({ secret: 'derpy' }));
 
 // console.log that your server is up and running
 app.listen(port);
@@ -52,8 +46,8 @@ app.get('/api/products', (req, res) => {
 });
 
 app.post('/api/products', (req, res) => {
-  var sql = `INSERT INTO products (name, regular_price, promotion_price, category, store, src) VALUES (?, ?, ?, ?, ?, ?)`;
-  connection.query(sql, [req.body.product.name, req.body.product.regular_price.replace(",", "."), req.body.product.promotion_price.replace(",", "."), req.body.product.category, req.body.product.store, req.body.product.src], function (err, rows, fields) {
+  var sql = `INSERT INTO products (name, regular_price, promotion_price, category, store, src, account_id) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+  connection.query(sql, [req.body.product.name, req.body.product.regular_price.replace(",", "."), req.body.product.promotion_price.replace(",", "."), req.body.product.category, req.body.product.store, req.body.product.src, req.body.product.account_id], function (err, rows, fields) {
     if (err) throw err
     res.json(rows);
   });
@@ -72,8 +66,6 @@ app.post('/api/auth/login', (request, response) => {
   if (request.body.loginInformation.email && request.body.loginInformation.password) {
 		connection.query('SELECT * FROM accounts WHERE email = ? AND password = ?', [request.body.loginInformation.email, request.body.loginInformation.password], function(error, results, fields) {
 			if (results.length > 0) {
-				request.session.loggedin = results;
-        request.session.email = request.body.loginInformation.email;
         response.send(results);
 			} else {
 				response.send('Incorrect Username and/or Password!');
