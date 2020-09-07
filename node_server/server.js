@@ -190,7 +190,7 @@ app.post('/api/auth/forgotpassword', (request, response) => {
 
 app.post('/api/auth/resetpassword', (request, response) => {
   var sql =`SELECT * FROM accounts WHERE email = ?;`;
-  var sqlInject = `UPDATE accounts SET reset_code = ? WHERE email = ?;`
+  var sqlInject = `UPDATE accounts SET password = ?, reset_code = ? WHERE email = ?;`
   connection.query(sql, [request.body.email], function (err, rows, fields) {
     if (err) console.log(err)
     if(rows.length > 0){
@@ -206,24 +206,38 @@ app.post('/api/auth/resetpassword', (request, response) => {
         if (error) {
             console.log(error);
         } else {
-          console.log(request.body);
-          bcrypt.compare(request.body.reset_code, rows[0].reset_code, function(err, res) { if(res) { 
+          var reset_code = "";
+          var charset = "abcdefghijklmnopqrstuvwxyz0123456789";
+        
+          for (var i = 0; i < 12; i++){
+            reset_code += charset.charAt(Math.floor(Math.random() * charset.length));
+          }
+          //Checks if reset code is the same as the stored one.
+          bcrypt.compare(request.body.resetCode, rows[0].reset_code, function(err, res) { if(res) { 
             if(res) { 
-              connection.query(sqlInject, [request.body.password, request.body.email], function (err, rows, fields) {
-                if(err) console.log(err)
-              })
+              //If it is, hash the new password and the new reset code.
+              bcrypt.hash(request.body.newPassword, 10, function(err, hash) {
+                bcrypt.hash(reset_code, 10, function(err, hash_reset_code) {
+                  //After hashing, insert into db the changed values.
+                  connection.query(sqlInject, [hash, hash_reset_code, request.body.email], function (err, rows, fields) {
+                    if(err) console.log(err)
+                  })
+                })
+              });
               response.send({msg:'Password Changes'});
               response.end();
+              //Password Doesn't match here!
             } else { 
               response.send('Incorrect Username and/or Password!');
             }
           } else { 
+            //Token is not even valid!
             response.send('Invalid Reset Code');
           }
           });
-          
         }
       });
+      //No Account found for that email!
     }else  { response.sendStatus(404); }
     });
 });

@@ -5,7 +5,7 @@ const PanelForgotPassword = ({landingPagePanels}) => {
     const [errorAlert, setErrorAlert] = useState(false);
     const [success, setSuccess] = useState(false);
     const [msg, setMsg] = useState('');
-    const [changeForm, setChangeForm] = useState(true);
+    const [changeForm, setChangeForm] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [newPassword, setNewPassword] = useState('');
     const [resetCode, setResetCode] = useState('');
@@ -61,7 +61,7 @@ const PanelForgotPassword = ({landingPagePanels}) => {
             setSuccess(false);
         },2000);
         }).catch((response) => {
-        setMsg('Invalid Reset Code!');
+        setMsg('Invalid or Expired Reset Code!');
         setErrorAlert(true);
         setTimeout(function(){
             setErrorAlert(false);
