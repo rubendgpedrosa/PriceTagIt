@@ -11,6 +11,7 @@ const [errorAlert, setErrorAlert] = useState(false);
 //Login fetch POST request sending login data.
 const login = async (loginInformation) => {
   //console.log(loginInformation);
+  if(loginInformation.password && loginInformation.email){
   fetch('/api/auth/login', {
     method: 'post',
     body: JSON.stringify({
@@ -26,7 +27,12 @@ const login = async (loginInformation) => {
     setTimeout(function(){
       setErrorAlert(false);
     },2000);
-  })
+  })}else{
+    setErrorAlert(true);
+    setTimeout(function(){
+      setErrorAlert(false);
+    },2000);
+  }
 }
 
 return (
