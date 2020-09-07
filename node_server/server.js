@@ -110,7 +110,7 @@ app.post('/api/auth/login', (request, response) => {
 });
 
 app.post('/api/auth/register', (request, response) => {
-  var sql = `INSERT INTO accounts (email, password) VALUES (?, ?);`;
+  var sql = `INSERT INTO accounts (email, password, reset_code) VALUES (?, ?, ?);`;
   var sqlCheck = `SELECT * FROM accounts WHERE email = ?;`
   var mailOptions = {
       from: 'pricetagitapp@gmail.com',
@@ -127,9 +127,18 @@ app.post('/api/auth/register', (request, response) => {
       connection.query(sqlCheck, [request.body.loginInformation.email], function (err, rows, fields) {
         if(rows.length <= 0){
           bcrypt.hash(request.body.loginInformation.password, 10, function(err, hash) {
-            connection.query(sql, [request.body.loginInformation.email, hash], function (err, rows, fields) {
-              response.send(rows);
-              response.end();
+            var reset_code = "";
+            var charset = "abcdefghijklmnopqrstuvwxyz0123456789";
+          
+            for (var i = 0; i < 12; i++){
+              reset_code += charset.charAt(Math.floor(Math.random() * charset.length));
+            }
+
+            bcrypt.hash(reset_code, 10, function(err, reset_code_hash){
+              connection.query(sql, [request.body.loginInformation.email, hash, reset_code_hash], function (err, rows, fields) {
+                response.send(rows);
+                response.end();
+              });
             });
           });
         }else{
@@ -145,8 +154,13 @@ app.post('/api/auth/forgotpassword', (request, response) => {
     connection.query(sql, [request.body.email], function (err, rows, fields) {
       if (err) console.log(err)
       if(rows.length > 0){
-        var reset_code = crypto.randomBytes(20).toString('hex').substring(0,12);
-
+        var reset_code = "";
+        var charset = "abcdefghijklmnopqrstuvwxyz0123456789";
+      
+        for (var i = 0; i < 12; i++){
+          reset_code += charset.charAt(Math.floor(Math.random() * charset.length));
+        }
+          
         var mailOptions = {
           from: 'pricetagitapp@gmail.com',
           to: request.body.email,
