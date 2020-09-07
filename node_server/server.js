@@ -8,6 +8,7 @@ const authentication = require('./middleware-authentication');
 const config = require('./config.js');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
+var crypto = require("crypto");
 
 let transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -116,7 +117,7 @@ app.post('/api/auth/register', (request, response) => {
       to: request.body.loginInformation.email,
       name: 'Price Tag It',
       subject: 'Price Tag It - Account Created',
-      html:'<div style="margin: auto; border-radius: 5px; padding: 20px; padding-bottom: 50px; text-align: center; width: 50%;"><h2 style="color: #4a5568;">Welcome to Price Tag It!</h2><p style="color: #4a5568;">Your account has been created and is ready to be used!</p style="color: #4a5568;">Get on our page and start creating your discounted products list.</span></div>',
+      html:`<div style="margin: auto; border-radius: 5px; padding: 20px; padding-bottom: 50px; text-align: center; width: 50%;"><h1 style="color: #4299e1;">Welcome to Price Tag It!</h2><p><h3 style="color: #718096;">Your account has been created and is ready to be used!</h3></p><p><h3 style="color: #718096;">Get on our page and start creating your discounted products list.</h3></p></div>`
     };
     
   transporter.sendMail(mailOptions, function(error, info){
@@ -144,31 +145,21 @@ app.post('/api/auth/forgotpassword', (request, response) => {
     connection.query(sql, [request.body.email], function (err, rows, fields) {
       if (err) console.log(err)
       if(rows.length > 0){
-        const payload = {
-          id: rows[0].id,
-          password: rows[0].password,
-          email: request.body.email,
-          scopes: ["changePassword"]
-        };
-      
-        const token = jwt.sign(payload, config.JWT_SECRET, {
-          expiresIn: 3600
-        });
+        var reset_code = crypto.randomBytes(20).toString('hex').substring(0,12);
 
         var mailOptions = {
           from: 'pricetagitapp@gmail.com',
           to: request.body.email,
           name: 'Price Tag It',
           subject: 'Price Tag It - Password Reset',
-          html:`<div style="margin: auto; border-radius: 5px; padding: 20px; padding-bottom: 50px; text-align: center; width: 50%;"><h2 style="color: #4a5568;">Hello from Price Tag It!</h2><p style="color: #4a5568;">There has been a request to reset your account password by you (or someone else).</p style="color: #4a5568;">If you did not request this, please ignore this email.</span>${token}</div>`,
+          html:`<div style="margin: auto; border-radius: 5px; padding: 20px; padding-bottom: 50px; text-align: center; width: 50%;"><h1 style="color: #4299e1;">Hello from Price Tag It!</h2><p><h3 style="color: #718096;">There has been a request to reset your account password by you (or someone else).</h3></p><p><h3 style="color: #718096;">If you did not request this, please ignore this email.</h3></p><p><h3 style="color: #718096;">If you did request a password reset, here's your reset code to do it!</h3></p><h2 style="color: #4a5568;padding-bottom: 2px; margin-bottom:2px;">Your Reset Code:</h2><p><h3  style="color: #4a5568;">${reset_code}</h3></p></div>`,
         };
 
           transporter.sendMail(mailOptions, function(error, info){
           if (error) {
               console.log(error);
           } else {
-            console.log('Email password sent: ' + info.response);
-            response.send(rows);
+            response.send({msg:'Sent'});
             response.end();
           }
         });
