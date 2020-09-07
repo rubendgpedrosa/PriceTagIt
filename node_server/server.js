@@ -88,7 +88,8 @@ app.post('/api/auth/login', (request, response) => {
     connection.query(sql, [request.body.loginInformation.email], function (err, rows, fields) {
       if (err) console.log(err)
       if(rows.length > 0){
-      bcrypt.compare(request.body.loginInformation.password, rows[0].password, function(err, res) { if(res) { 
+      bcrypt.compare(request.body.loginInformation.password, rows[0].password, function(err, res) {
+        if(res) { 
         const payload = {
           id: rows[0].id,
           email: request.body.loginInformation.email,
@@ -166,7 +167,7 @@ app.post('/api/auth/forgotpassword', (request, response) => {
         from: 'Price Tag It',
         to: request.body.email,
         name: 'Price Tag It',
-        subject: 'Price Tag It - Password Reset',
+        subject: 'Price Tag It - Password Reset Code',
         html:`<div style="margin: auto; border-radius: 5px; padding: 20px; padding-bottom: 50px; text-align: center; width: 50%;"><h1 style="color: #4299e1;">Hello from Price Tag It!</h2><p><h3 style="color: #718096;">There has been a request to reset your account password by you (or someone else).</h3></p><p><h3 style="color: #718096;">If you did not request this, please ignore this email.</h3></p><p><h3 style="color: #718096;">If you did request a password reset, here's your reset code to do it!</h3></p><h2 style="color: #4a5568;padding-bottom: 2px; margin-bottom:2px;">Your Reset Code:</h2><p><h3  style="color: #4a5568;">${reset_code}</h3></p></div>`,
       };
 
@@ -181,6 +182,46 @@ app.post('/api/auth/forgotpassword', (request, response) => {
           });
           response.send({msg:'Sent'});
           response.end();
+        }
+      });
+    }else  { response.sendStatus(404); }
+    });
+});
+
+app.post('/api/auth/resetpassword', (request, response) => {
+  var sql =`SELECT * FROM accounts WHERE email = ?;`;
+  var sqlInject = `UPDATE accounts SET reset_code = ? WHERE email = ?;`
+  connection.query(sql, [request.body.email], function (err, rows, fields) {
+    if (err) console.log(err)
+    if(rows.length > 0){
+      var mailOptions = {
+        from: 'Price Tag It',
+        to: request.body.email,
+        name: 'Price Tag It',
+        subject: 'Price Tag It - Password Sucessfully Reset',
+        html:`<div style="margin: auto; border-radius: 5px; padding: 20px; padding-bottom: 50px; text-align: center; width: 50%;"><h1 style="color: #4299e1;">Hello from Price Tag It!</h2><p><h3 style="color: #718096;">Your account password has been changed sucessfully by you (or someone else).</h3></p><p><h3 style="color: #718096;">You can always request a new password change by going to our page and choosing Forgot Password!</h3></p></div>`,
+      };
+
+        transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            console.log(error);
+        } else {
+          console.log(request.body);
+          bcrypt.compare(request.body.reset_code, rows[0].reset_code, function(err, res) { if(res) { 
+            if(res) { 
+              connection.query(sqlInject, [request.body.password, request.body.email], function (err, rows, fields) {
+                if(err) console.log(err)
+              })
+              response.send({msg:'Password Changes'});
+              response.end();
+            } else { 
+              response.send('Incorrect Username and/or Password!');
+            }
+          } else { 
+            response.send('Invalid Reset Code');
+          }
+          });
+          
         }
       });
     }else  { response.sendStatus(404); }

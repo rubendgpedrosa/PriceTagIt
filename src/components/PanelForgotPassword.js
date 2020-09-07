@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 
 const PanelForgotPassword = ({landingPagePanels}) => {
-    const [email, setEmail] = useState('');
+    const [email, setEmail] = useState('rubenpedrosa993@gmail.com');
     const [errorAlert, setErrorAlert] = useState(false);
     const [success, setSuccess] = useState(false);
     const [msg, setMsg] = useState('');
-    const [changeForm, setChangeForm] = useState(false);
+    const [changeForm, setChangeForm] = useState(true);
     const [showPassword, setShowPassword] = useState(false);
     const [newPassword, setNewPassword] = useState('');
     const [resetCode, setResetCode] = useState('');
@@ -41,8 +41,38 @@ const PanelForgotPassword = ({landingPagePanels}) => {
           }
       }
 
-      const changePasswordHandler = async () => {
-          console.log({resetCode: resetCode, newPassword: newPassword});
+      const resetPasswordHandler = async () => {
+        console.log({email: email, resetCode: resetCode, newPassword: newPassword});
+        if(email && resetCode && newPassword){
+        fetch('/api/auth/resetpassword', {
+        method: 'post',
+        body: JSON.stringify({
+            email: email,
+            newPassword: newPassword,
+            resetCode: resetCode
+        }),
+        headers: {"Content-Type": "application/json"}
+        }).then(res => res.json())
+        .then((result) => {
+        setMsg('Your password has been changed!');
+        setSuccess(true);
+        setChangeForm(true);
+        setTimeout(function(){
+            setSuccess(false);
+        },2000);
+        }).catch((response) => {
+        setMsg('Invalid Reset Code!');
+        setErrorAlert(true);
+        setTimeout(function(){
+            setErrorAlert(false);
+        },2000);
+        })}else{
+            setMsg('Please enter Reset Code and Password!');
+            setErrorAlert(true);
+            setTimeout(function(){
+            setErrorAlert(false);
+            },2000);
+        }
       }
       /*
       <p className="text-green-500 font-bold">{msg}</p>
@@ -76,7 +106,7 @@ const PanelForgotPassword = ({landingPagePanels}) => {
                         </div>
                     }</label>
                     </div>
-                    <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type={showPassword? 'text':'password'} autoComplete="off" value={resetCode} onChange={event => setResetCode(event.target.value)}  />
+                    <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type={showPassword? 'text':'password'} autoComplete="off" value={newPassword} onChange={event => setNewPassword(event.target.value)}  />
                 </div>
             </div>
             </div>
@@ -87,13 +117,13 @@ const PanelForgotPassword = ({landingPagePanels}) => {
                 </label>
             </div>
             <div className="md:w-2/3">
-                <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" value={newPassword} onChange={event => setNewPassword(event.target.value)}/>
+                <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" value={resetCode} onChange={event => setResetCode(event.target.value)}/>
             </div>
             </div>
             <div className="md:flex md:items-center">
             <div className="md:w-1/3"></div>
             <div className="md:w-2/3">
-                <button onClick={() => changePasswordHandler()} className="bg-blue-500 hover:bg-blue-400 focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
+                <button onClick={() => resetPasswordHandler()} className="bg-blue-500 hover:bg-blue-400 focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
                 Sign In
                 </button>
             </div>
