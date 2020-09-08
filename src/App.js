@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import ProductListing from './components/ProductListing';
 import LandingPage from './components/LandingPage';
 
-
 function App() {
 const [isLoggedIn, setIsLoggedIn] = useState(false);
 const [loggedUser, setLoggedUser] = useState();
@@ -41,7 +40,9 @@ return (
     <div><LandingPage login={(loginInformation) => login(loginInformation)} errorAlert={errorAlert} setLoggedUser={(user) => setLoggedUser(user)}/>
     <footer className='w-full text-center fixed bottom-0 text-gray-100 bg-blue-500 p-3'>
       <span className=" font-bold">Price Tag It &copy;</span> | Credits to  - <span className="font-bold cursor-pointer hover:underline">monkik&freepik</span>
-    </footer></div>}
+    </footer>
+    </div>
+    }
   </div>
   );
 }

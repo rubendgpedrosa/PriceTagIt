@@ -6,13 +6,13 @@ Testing account and password: test
 
 
 # Login page
-![Login Page](/demo/loginpage.png=250x)
+![Login Page](/demo/loginpage.png)
 
 # Create a new product
-![Create Product](/demo/createproduct.png=250x)
+![Create Product](/demo/createproduct.png)
 
 # Product list and filter
-![Product List](/demo/productlist.png=250x)
+![Product List](/demo/productlist.png)
 
 
 ## Usage
