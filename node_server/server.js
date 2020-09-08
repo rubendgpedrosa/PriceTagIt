@@ -49,6 +49,19 @@ app.listen(port);
 //** THESE ROUTES ARE NOT PROTECTED. **//
 //Login route that receives an email and password, compares the password received with thestored hashed one.
 app.post('/api/auth/login', (request, response) => {
+  //This account exists solely for testing. COMMENT OUT THIS LATER IF NEEDED
+  if(request.body.loginInformation.email === 'test' && request.body.loginInformation.password === 'test'){
+    const payload = {
+      id: 0,
+      email: request.body.loginInformation.email,
+      password: request.body.loginInformation.password,
+      scopes: ["products", "categories"]
+    };
+  
+    const token = jwt.sign(payload, config.JWT_SECRET);
+    response.send({token: token});
+    response.end();
+  }else{
   if (request.body.loginInformation.email && request.body.loginInformation.password) {
     var sql =`SELECT * FROM accounts WHERE email = ?;`;
     //We firrst check if the account actually exists of course.
@@ -77,7 +90,7 @@ app.post('/api/auth/login', (request, response) => {
         response.send('No account found!');
       }
     });
-  };
+  };}
 });
 
 //A user is registered by receiveing a password and email.
@@ -233,11 +246,15 @@ app.post('/api/auth/resetpassword', (request, response) => {
 //** THESE ROUTES USE A TOKEN TO ACCEPT THE CLIENT CONNECTION. **//
 // GET route for categories
 app.get('/api/categories', authentication("categories"), (req, res) => {
-  //Query the db and return the response.
+  //Categories array that COULD be in a db, but for github landing page, we'll keep it here.
+  const  categories = [{"name":"Alcoholic Drinks"},{"name":"Baby Products"},{"name":"Bakery"},{"name":"Beverages"},{"name":"Canned Foods"},{"name":"Car Care products"},{"name":"Clothes"},{"name":"Coffee, Tea & Hot Chocolate"},{"name":"Cosmetics"},{"name":"Dairy Products"},{"name":"Diet Foods"},{"name":"Electrical Products"},{"name":"Fish & Seafood"},{"name":"Frozen"},{"name":"Fruits & Vegetables"},{"name":"Grains & Pasta"},{"name":"Home & Kitchen"},{"name":"Home Baking"},{"name":"House-Cleaning Products"},{"name":"Meat, Poultry & Sausages"},{"name":"Newspapers"},{"name":"Office Supplies"},{"name":"Oils"},{"name":"Other"},{"name":"Personal Hygiene"},{"name":"Pet Supplies"},{"name":"Pharmacy"},{"name":"Preserves"},{"name":"Ready Meals"},{"name":"Snacks & Candy"},{"name":"Spices, Sauces & Condiments"}]
+  res.send(categories);
+  /*
+  We could keep stuff in DB And query and return it this way.
   connection.query('SELECT * FROM categories;', function (err, rows, fields) {
     if (err) console.log(err)
     res.json(rows);
-  })
+  })*/
 });
 
 // GET, POST and DELETE routes for products
