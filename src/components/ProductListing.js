@@ -120,14 +120,14 @@ return (
         <ProductCard key={product.id} product={product} deleteItem={(product) => deleteItemHandler(product)} />
         </div>
       ))}
-      </div>)}
-	  </div>
-    {alert && <Alert created={alertType}/>}
-    {<button onClick={() => topFunction()} id="myBtn" className="fixed rounded-full shadow-md p-2 bg-blue-300 hover:bg-blue-400 text-white" style={{bottom: 25,left:25}} title="Go to top">
+      <button onClick={() => topFunction()} id="myBtn" className="fixed rounded-full shadow-md p-2 bg-blue-300 hover:bg-blue-400 text-white" style={{bottom: 25,left:25}} title="Go to top">
     <svg className="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 11l7-7 7 7M5 19l7-7 7 7" />
     </svg>
-    </button>}
+    </button>
+      </div>)}
+	  </div>
+    {alert && <Alert created={alertType}/>}
   </div>
   );
 }
