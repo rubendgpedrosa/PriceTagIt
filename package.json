@@ -1,6 +1,6 @@
 {
   "name": "price-tag-it",
-  "homepage": "http://rubendgpedrosa.github.io/pricetagit",
+  "homepage": "http://rubendgpedrosa.me/PriceTagIt/",
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:5000",

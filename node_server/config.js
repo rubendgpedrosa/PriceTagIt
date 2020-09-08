@@ -1,16 +1,12 @@
 module.exports = {
-  //can use this, I guess
+  //Secret used to salt the hash!
     JWT_SECRET: "pricetagit_thekey",
+    //Free email account
     EMAIL: 'pricetagitapp@gmail.com',
     PASSWORD: 'kuooyoabjdwxfoxi'
   };
 
 /*AISLES CATEGORIES LIST
-monkik
-freepik
-Flat Icons
-iconixar
-surang
 INSERT INTO
   categories (name)
 VALUES

@@ -105,11 +105,14 @@ return (
 	<div className="container mx-auto bg-white md:mt-16 h-full overflow-y-auto">
     {!addNew && !isLoading && products.length === 0 && <h1 className="text-5xl text-center mx-auto mt-32">No Products Found</h1> }
     {addNew ? <ProductCreate categories={categories} submitProduct={(product) => createProductHandler(product)}/>: (
-    isLoading ? <h1 className="text-6xl text-center mx-auto mt-32">Loading...</h1> : <div className="grid grid-cols-1 px-4">
+    isLoading ? <h1 className="text-6xl text-center mx-auto mt-32">Loading...</h1> :
+    <div className="grid grid-cols-1 px-4">
       {products.filter(product => product.name.toUpperCase().includes(term.toUpperCase()) ||
       product.category.toUpperCase().includes(term.toUpperCase()) || product.store.toUpperCase().includes(term.toUpperCase()))
       .map(product => (
+        <div key={product.id}>
         <ProductCard key={product.id} product={product} deleteItem={(product) => deleteItemHandler(product)} />
+        </div>
       ))}
       </div>)}
 	  </div>

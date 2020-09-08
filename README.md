@@ -15,6 +15,6 @@ npm start
 # Build CSS and assets
 npm run build
 
-#Start Express server
+# Start Express server
 node ./node_server/server.js
 ```
