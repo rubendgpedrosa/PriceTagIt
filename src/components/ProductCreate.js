@@ -5,6 +5,10 @@ const ProductCreate = ({submitProduct, categories}) => {
     const [emptyProduct] = useState({name: '', regular_price: '', promotion_price: '', store: '', category: ''});
     const [newProduct, setNewProduct] = useState({name: '', regular_price: '', promotion_price: '', store: '', category: ''});
 
+
+    // TODO add submition validation before sending data.
+
+
     //Sends the object to the parent component.
     const onSubmit = (e) => {
         //Prevents normal submit behaviour.

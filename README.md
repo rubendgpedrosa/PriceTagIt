@@ -1,9 +1,9 @@
 # Price Tag It - React, Express & Tailwind CSS 
 
-Simple application that stores products information regarding pricing and discount prices using an Express server. Tailwind css is built into workflow with postcss and autoprefixer.
+Simple application that lets you store information about supermarket products like pricing and discount prices using an Express server to handle all the API requests. Tailwind css is built into workflow with postcss and autoprefixer.
 
 ## Usage
-Add your products to your list and keep track of prices.
+Create an account and start adding your products to your list to keep track of prices and discounts.
 
 ```
 # Install dependencies

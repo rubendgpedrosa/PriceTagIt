@@ -53,7 +53,8 @@ function App({loggedUser}) {
 
 //Function used to create the new object received from ProductCreate component..
 const createProductHandler = async (product) => {
-  product.src = product.category+'.svg';
+  //We set the product image from it's category.
+  product.src = product.category.toLowerCase().split(" ").join("")+'.svg';
   console.log(loggedUser);
   product.account_id = loggedUser.id;
   fetch('/api/products', {
