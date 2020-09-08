@@ -89,7 +89,7 @@ const deleteItemHandler = async (product) => {
   }).then(function(response) {
     return response.json();
   }).then(function() {
-    setProducts(products.filter(p => p.name !== product.name));
+    setProducts(products.filter(p => p.id !== product.id));
     setAlertType(0);
     setAlert(true);
     setTimeout(function(){
