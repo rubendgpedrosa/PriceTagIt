@@ -19,37 +19,36 @@ function App({loggedUser}) {
 
   //Function that fets call to populate the data early. Reacts to changes to loggedUser.
   useEffect(() => {
-    getData().then(setIsLoading(false));
-  }, [loggedUser]);
-
   //Actual function to get all the data.
   const getData = async () => {
     //Issue with double request when loggedUser is first undefined.
-    if(loggedUser !== undefined){
-    await fetch('/api/products', 
-    //We use our token to authenticate every request.
-    {headers: new Headers({
-      'Authorization': 'Bearer ' + loggedUser, 
-      'Content-Type': 'application/json'
+      if(loggedUser !== undefined){
+      await fetch('/api/products', 
+      //We use our token to authenticate every request.
+      {headers: new Headers({
+        'Authorization': 'Bearer ' + loggedUser, 
+        'Content-Type': 'application/json'
+        }), 
+        })
+      .then(res => res.json())
+      .then((result) => {
+        setProducts(result);
+      }).then(
+      fetch('/api/categories', 
+      //We use our token to authenticate every request.
+      {headers: new Headers({
+        'Authorization': 'Bearer ' + loggedUser, 
+        'Content-Type': 'application/json'
       }), 
-      })
-    .then(res => res.json())
-    .then((result) => {
-      setProducts(result);
-    }).then(
-    fetch('/api/categories', 
-    //We use our token to authenticate every request.
-    {headers: new Headers({
-      'Authorization': 'Bearer ' + loggedUser, 
-      'Content-Type': 'application/json'
-    }), 
-  })
-    .then(res => res.json())
-    .then((result) => {
-        setCategories(result);
-    }))
-  }
-};
+    })
+        .then(res => res.json())
+        .then((result) => {
+            setCategories(result);
+        }))
+      }
+    };
+    getData().then(setIsLoading(false));
+  }, [loggedUser]);
 
 //Function used to create the new object received from ProductCreate component..
 const createProductHandler = async (product) => {
