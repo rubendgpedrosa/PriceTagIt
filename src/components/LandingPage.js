@@ -32,6 +32,9 @@ const LandingPage = ({ login, errorAlert }) => {
             </div>
              {renderSwitch()}
         </div>
+        <footer className='w-full text-center fixed bottom-0 text-gray-100 bg-blue-500 p-3'>
+      <span className=" font-bold">Price Tag It &copy; | Icon Creators  - </span><span>monkik & freepik</span>
+    </footer>
     </div>
     )
 }

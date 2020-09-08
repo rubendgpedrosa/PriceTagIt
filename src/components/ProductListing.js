@@ -95,7 +95,6 @@ const deleteItemHandler = async (product) => {
       setAlert(false);
     },2000);
   });
-  
 };
 
 const topFunction = () => {
@@ -104,13 +103,13 @@ const topFunction = () => {
 
 return (
   <div>
-
     <NavBar searchText={(text) => setTerm(text)} addNew={addNew} changeWindow={(changed => setAddNew(!addNew))}/>
-	<div className="container mx-auto bg-white md:mt-16 h-full overflow-y-auto">
+	<div className="container mx-auto bg-white md:mt-16 h-full overflow-y-auto pb-4">
     {!addNew && !isLoading && products.length === 0 && <h1 className="text-5xl text-center mx-auto mt-32">No Products Found</h1> }
     {addNew ? <ProductCreate categories={categories} submitProduct={(product) => createProductHandler(product)}/>: (
     isLoading ? <h1 className="text-6xl text-center mx-auto mt-32">Loading...</h1> :
     <div className="grid grid-cols-1 px-4">
+      
       {products.filter(product => product.name.toUpperCase().includes(term.toUpperCase()) ||
       product.category.toUpperCase().includes(term.toUpperCase()) || product.store.toUpperCase().includes(term.toUpperCase()))
       .map(product => (
@@ -118,7 +117,7 @@ return (
         <ProductCard key={product.id} product={product} deleteItem={(product) => deleteItemHandler(product)} />
         </div>
       ))}
-      <button onClick={() => topFunction()} id="myBtn" className="focus:outline-none fixed rounded-full shadow-md p-2 bg-blue-300 hover:bg-blue-400 text-white" style={{bottom: 25,left:25}} title="Go to top">
+      <button onClick={() => topFunction()} id="myBtn" style={{zIndex:10}} className="focus:outline-none fixed rounded-full shadow-md p-2 bg-blue-300 hover:bg-blue-400 text-white" style={{bottom: 25,left:25}} title="Go to top">
     <svg className="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 11l7-7 7 7M5 19l7-7 7 7" />
     </svg>

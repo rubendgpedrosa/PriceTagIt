@@ -13,9 +13,9 @@ const ProductSearch = ({ searchText }) => {
 
   return (
     <div className='max-w-sm pt-12 rounded overflow-hidden my-10 mx-auto'>
-        <div className="flex items-center border-b border-b-2 border-blue-500 mx-3 py-2">
+        <div className="flex items-center border-b border-b-2 border-blue-200 mx-3 py-2">
         <input id="search" onChange={e => {searchText(e.target.value); setText(e.target.value)}} className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
-        type="text" placeholder="Insert Product Info..." />
+        type="text" placeholder="Search by Product Name, Category or Store" />
         {text.length > 0?
         <button onClick={clearSubmition} className="flex-shrink-0 bg-transparent hover:text-red-500 text-sm text-gray-700 pt-1 px-2 rounded-full focus:outline-none" type="submit">
         <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
