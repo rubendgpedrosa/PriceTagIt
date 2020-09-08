@@ -2,6 +2,16 @@
 
 Simple Web Mobile Application that lets you store information about supermarket products like pricing and discount prices using an Express server to handle all the API requests. Tailwind css is built into workflow with postcss and autoprefixer.
 
+## Login page
+![Login Page](/demo/loginpage.png)
+
+## Create a new product
+![Create Product](/demo/createproduct.png)
+
+## Product list and filter
+![Product List](/demo/productlist.png)
+
+
 ## Usage
 Create an account and start adding your products to your list to keep track of prices and discounts.
 
