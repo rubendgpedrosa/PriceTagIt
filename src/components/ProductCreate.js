@@ -20,7 +20,7 @@ const ProductCreate = ({submitProduct, categories}) => {
     }
 
     return(
-        <div className="mx-auto text-center pt-16 mt-12 p-2">
+        <div className="mx-auto text-center pt-16 mt-12 p-2  max-w-md">
             <form onSubmit={onSubmit} className="w-full max-w-sm">
             <span className="text-xl uppercase font-bold text-center mx-auto mt-32 text-gray-700">Add New Product</span>
             <div className="flex mb-4">
@@ -35,7 +35,7 @@ const ProductCreate = ({submitProduct, categories}) => {
                 {categories.map((category, index) => <option  key={index} value={category.name}>{category.name}</option>)}
                 </select>
             </div>
-            <button className="asbolute  bg-blue-500 p-2 rounded mt-10 text-gray-100">Submit</button>
+            <button className="bg-blue-500 p-2 rounded mt-10 text-gray-100">Create</button>
             </form>
             {errorCreate && <div className="alert-toast fixed bottom-0 right-0 m-8 w-5/6 md:w-full max-w-sm">
             <label className="close cursor-pointer flex items-start justify-between w-full p-2 bg-red-500 h-12 text-center items-center rounded shadow-lg text-white" title="close">

@@ -156,9 +156,9 @@ const PanelForgotPassword = ({landingPagePanels}) => {
         <div className="md:w-1/3"></div>
         <div className="md:w-2/3">
             <button onClick={() => forgotPassword()} className="bg-blue-500 hover:bg-blue-400 focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
-            Reset Password
+            Reset
             </button>
-            <div className="text-gray-600 py-2 text-center float-right">Have an <span className="cursor-pointer text-blue-500 active:text-blue-700 hover:text-blue-700" onClick={() => landingPagePanels()}>Account</span>?</div>
+            <div className="text-gray-600 py-2 text-center float-right">Back to <span className="cursor-pointer text-blue-500 active:text-blue-700 hover:text-blue-700" onClick={() => landingPagePanels()}>Log In</span> page.</div>
         </div>
         </div>
     </form>

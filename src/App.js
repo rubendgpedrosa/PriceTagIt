@@ -40,7 +40,7 @@ return (
     {isLoggedIn?<ProductListing loggedUser={loggedUser}/>:
     <div><LandingPage login={(loginInformation) => login(loginInformation)} errorAlert={errorAlert} setLoggedUser={(user) => setLoggedUser(user)}/>
     <footer className='w-full text-center fixed bottom-0 text-gray-100 bg-blue-500 p-3'>
-      <span className=" font-bold">Price Tag It &copy;</span> | <span className="font-bold cursor-pointer hover:underline">Icon Credits - monkik&freepik</span>
+      <span className=" font-bold">Price Tag It &copy;</span> | Credits to  - <span className="font-bold cursor-pointer hover:underline">monkik&freepik</span>
     </footer></div>}
   </div>
   );
