@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 
 const ProductSearch = ({ searchText }) => {
+  //Search string sent to parent component.
   const [text, setText] = useState('');
 
+  //Function used to clear the search text after clicking on the clear button.
   const clearSubmition = () => {
     document.getElementById('search').value= null;
     setText('');

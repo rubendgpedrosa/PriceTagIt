@@ -8,8 +8,8 @@ const authentication = require('./middleware-authentication');
 const config = require('./config.js');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
-var crypto = require("crypto");
 
+//Start the nodemailer initial configurations
 let transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -18,6 +18,7 @@ let transporter = nodemailer.createTransport({
   }
 });
 
+//Connect to database
 var connection = mysql.createConnection({
   host: '172.17.0.2',
   port: 3306,
@@ -25,71 +26,40 @@ var connection = mysql.createConnection({
   password: 'mysql',
   database: 'pricetagit',
 })
-connection.connect((err) => {
 
-  if(!err)
-      console.log('Database is connected!');
-  else
-      console.log('Database not connected! : '+ JSON.stringify(err, undefined,2));
-  });
+//Check if the connection was made to the database and console logs it.
+connection.connect((err) => {
+if(!err)
+    console.log('Database is connected!');
+else
+    console.log('Database not connected! : '+ JSON.stringify(err, undefined,2));
+});
 
 // Parse JSON bodies (as sent by API clients)
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
-//app.use(express.session({ secret: 'derpy' }));
 
-// console.log that your server is up and running
+//Port that the server is listening too.
 app.listen(port);
 
-// GET route for categories
-app.get('/api/categories', authentication("categories"), (req, res) => {
-  connection.query('SELECT * FROM categories;', function (err, rows, fields) {
-    if (err) console.log(err)
-    res.json(rows);
-  })
-});
 
-// GET, POST and DELETE routes for products
-app.get('/api/products', authentication("products"), (req, res) => {
-  var sql=`SELECT * FROM products WHERE account_id = ?;`;
-  connection.query(sql, [jwt.verify(req.headers["authorization"].slice(7), config.JWT_SECRET, (err, decoded) => {
-    return decoded.id
-  })], function (err, rows, fields) {
-    if (err) console.log(err)
-  //Prints the rows resulted from previous query
-    res.json(rows.reverse());
-  })
-});
 
-app.post('/api/products', authentication("products"), (req, res) => {
-  var sql = `INSERT INTO products (name, regular_price, promotion_price, category, store, src, account_id) VALUES (?, ?, ?, ?, ?, ?, ?)`;
-  connection.query(sql, [req.body.product.name, req.body.product.regular_price.replace(",", "."), req.body.product.promotion_price.replace(",", "."), req.body.product.category, req.body.product.store, req.body.product.src, jwt.verify(req.headers["authorization"].slice(7), config.JWT_SECRET, (err, decoded) => {
-    return decoded.id
-  })], function (err, rows, fields) {
-    if (err) console.log(err)
-    res.json(rows);
-  });
-});
-
-app.delete('/api/products/:id', authentication("products"), (req, res) => {
-  var sql = `DELETE FROM products WHERE (id=? AND account_id=?)`;
-  connection.query(sql, [req.params.id, jwt.verify(req.headers["authorization"].slice(7), config.JWT_SECRET, (err, decoded) => {
-    return decoded.id
-  })], function (err, rows, fields) {
-    if (err) console.log(err)
-    res.json(rows);
-  });
-});
-
-//Login routes
+//** LOGIN ROUTES FOR NON LOGGED CLIENTS. **//
+//** CLIENTS CAN REGISTER, LOGIN AND RESET THEIR PASSWORD. **//
+//** THESE ROUTES ARE NOT PROTECTED. **//
+//Login route that receives an email and password, compares the password received with thestored hashed one.
 app.post('/api/auth/login', (request, response) => {
   if (request.body.loginInformation.email && request.body.loginInformation.password) {
     var sql =`SELECT * FROM accounts WHERE email = ?;`;
+    //We firrst check if the account actually exists of course.
     connection.query(sql, [request.body.loginInformation.email], function (err, rows, fields) {
       if (err) console.log(err)
       if(rows.length > 0){
+        //Comparison is made here!
       bcrypt.compare(request.body.loginInformation.password, rows[0].password, function(err, res) {
         if(res) { 
+          //Since it was a valid password, we now generate a token and return it to the client, bearing all the
+          // data he'll need for future requests regarding his account.
         const payload = {
           id: rows[0].id,
           email: request.body.loginInformation.email,
@@ -110,6 +80,7 @@ app.post('/api/auth/login', (request, response) => {
   };
 });
 
+//A user is registered by receiveing a password and email.
 app.post('/api/auth/register', (request, response) => {
   var sql = `INSERT INTO accounts (email, password, reset_code) VALUES (?, ?, ?);`;
   var sqlCheck = `SELECT * FROM accounts WHERE email = ?;`
@@ -120,21 +91,24 @@ app.post('/api/auth/register', (request, response) => {
       subject: 'Price Tag It - Account Created',
       html:`<div style="margin: auto; border-radius: 5px; padding: 20px; padding-bottom: 50px; text-align: center; width: 50%;"><h1 style="color: #4299e1;">Welcome to Price Tag It!</h2><p><h3 style="color: #718096;">Your account has been created and is ready to be used!</h3></p><p><h3 style="color: #718096;">Get on our page and start creating your discounted products list.</h3></p></div>`
     };
-    
+    //If an email is sent (the account is legit), we then check if the account exists.
   transporter.sendMail(mailOptions, function(error, info){
     if (error) {
       response.sendStatus(404);
     } else {
+      //Check for duplicate account here!
       connection.query(sqlCheck, [request.body.loginInformation.email], function (err, rows, fields) {
         if(rows.length <= 0){
+          //We hash the password for the new account here.
           bcrypt.hash(request.body.loginInformation.password, 10, function(err, hash) {
             var reset_code = "";
             var charset = "abcdefghijklmnopqrstuvwxyz0123456789";
-          
+            //We generate this for the reset code. It's just to prevent storing a NULL code and have people 
+            //change other's passwords by sending an empty value on the reset code field.
             for (var i = 0; i < 12; i++){
               reset_code += charset.charAt(Math.floor(Math.random() * charset.length));
             }
-
+            //We hash the random string and store it.
             bcrypt.hash(reset_code, 10, function(err, reset_code_hash){
               connection.query(sql, [request.body.loginInformation.email, hash, reset_code_hash], function (err, rows, fields) {
                 response.send(rows);
@@ -143,6 +117,7 @@ app.post('/api/auth/register', (request, response) => {
             });
           });
         }else{
+          //Account exists
           response.sendStatus(401);
         }
       });
@@ -150,19 +125,24 @@ app.post('/api/auth/register', (request, response) => {
   });
 });
 
+//Forgotten password only generates a new random reset code, sends it to the user email and stores
+//the hashed version on the db.
 app.post('/api/auth/forgotpassword', (request, response) => {
   var sql =`SELECT * FROM accounts WHERE email = ?;`;
   var sqlInject = `UPDATE accounts SET reset_code = ? WHERE email = ?;`
+  //Always checking if account exists.
   connection.query(sql, [request.body.email], function (err, rows, fields) {
     if (err) console.log(err)
     if(rows.length > 0){
+      //After having it exist, we generate a new reset token
       var reset_code = "";
       var charset = "abcdefghijklmnopqrstuvwxyz0123456789";
     
       for (var i = 0; i < 12; i++){
         reset_code += charset.charAt(Math.floor(Math.random() * charset.length));
       }
-        
+
+      //We send the email with the token in it's content.
       var mailOptions = {
         from: 'Price Tag It',
         to: request.body.email,
@@ -175,6 +155,7 @@ app.post('/api/auth/forgotpassword', (request, response) => {
         if (error) {
             console.log(error);
         } else {
+          //We hash the new reset code and store it in the database.
           bcrypt.hash(reset_code, 10, function(err, reset_code_hash) {
             connection.query(sqlInject, [reset_code_hash, request.body.email], function (err, rows, fields) {
               if(err) console.log(err)
@@ -188,9 +169,12 @@ app.post('/api/auth/forgotpassword', (request, response) => {
     });
 });
 
+//This route is used to then receive the new password and reset code. We then compare it and store the
+//new password hashed!
 app.post('/api/auth/resetpassword', (request, response) => {
   var sql =`SELECT * FROM accounts WHERE email = ?;`;
   var sqlInject = `UPDATE accounts SET password = ?, reset_code = ? WHERE email = ?;`
+  //Check if it exists again.
   connection.query(sql, [request.body.email], function (err, rows, fields) {
     if (err) console.log(err)
     if(rows.length > 0){
@@ -206,6 +190,8 @@ app.post('/api/auth/resetpassword', (request, response) => {
         if (error) {
             console.log(error);
         } else {
+          //We generate a new string again to replace the one being used now. This way we prevent
+          //the same code being used more than once.
           var reset_code = "";
           var charset = "abcdefghijklmnopqrstuvwxyz0123456789";
         
@@ -218,7 +204,7 @@ app.post('/api/auth/resetpassword', (request, response) => {
               //If it is, hash the new password and the new reset code.
               bcrypt.hash(request.body.newPassword, 10, function(err, hash) {
                 bcrypt.hash(reset_code, 10, function(err, hash_reset_code) {
-                  //After hashing, insert into db the changed values.
+                  //After hashing, insert into db the new hashed password and reset code.
                   connection.query(sqlInject, [hash, hash_reset_code, request.body.email], function (err, rows, fields) {
                     if(err) console.log(err)
                   })
@@ -242,3 +228,51 @@ app.post('/api/auth/resetpassword', (request, response) => {
     });
 });
 
+
+//** ROUTES USED TO GET, POST AND DELETE DATA FOR THE CLIENT. **//
+//** THESE ROUTES USE A TOKEN TO ACCEPT THE CLIENT CONNECTION. **//
+// GET route for categories
+app.get('/api/categories', authentication("categories"), (req, res) => {
+  //Query the db and return the response.
+  connection.query('SELECT * FROM categories;', function (err, rows, fields) {
+    if (err) console.log(err)
+    res.json(rows);
+  })
+});
+
+// GET, POST and DELETE routes for products
+app.get('/api/products', authentication("products"), (req, res) => {
+  var sql=`SELECT * FROM products WHERE account_id = ?;`;
+  //Connect to db and use the authorization to return the products associated to the id in the token.
+  connection.query(sql, [jwt.verify(req.headers["authorization"].slice(7), config.JWT_SECRET, (err, decoded) => {
+    return decoded.id
+  })], function (err, rows, fields) {
+    if (err) console.log(err)
+  //Prints the rows resulted from previous query
+    res.json(rows.reverse());
+  })
+});
+
+//Inserting in the database needs to have the correct token
+app.post('/api/products', authentication("products"), (req, res) => {
+  var sql = `INSERT INTO products (name, regular_price, promotion_price, category, store, src, account_id) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+   //Insert into the db. Nothing special.
+  connection.query(sql, [req.body.product.name, req.body.product.regular_price.replace(",", "."), req.body.product.promotion_price.replace(",", "."), req.body.product.category, req.body.product.store, req.body.product.src, jwt.verify(req.headers["authorization"].slice(7), config.JWT_SECRET, (err, decoded) => {
+    return decoded.id
+  })], function (err, rows, fields) {
+    if (err) console.log(err)
+    res.json(rows);
+  });
+});
+
+//Deleting works the same. Token sent has the id in it.
+app.delete('/api/products/:id', authentication("products"), (req, res) => {
+  var sql = `DELETE FROM products WHERE (id=? AND account_id=?)`;
+  //Query for data and return it when it belongs to the logged user account id.
+  connection.query(sql, [req.params.id, jwt.verify(req.headers["authorization"].slice(7), config.JWT_SECRET, (err, decoded) => {
+    return decoded.id
+  })], function (err, rows, fields) {
+    if (err) console.log(err)
+    res.json(rows);
+  });
+});

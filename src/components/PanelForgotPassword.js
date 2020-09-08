@@ -4,16 +4,21 @@ const PanelForgotPassword = ({landingPagePanels}) => {
     const [email, setEmail] = useState('');
     const [errorAlert, setErrorAlert] = useState(false);
     const [success, setSuccess] = useState(false);
+    //Used to set the alert messages.
     const [msg, setMsg] = useState('');
+    //Used to determine which component is showing (Input email | Input new passord & reset code.)
     const [changeForm, setChangeForm] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [newPassword, setNewPassword] = useState('');
     const [resetCode, setResetCode] = useState('');
+    //After we submit a new password and the reset code, this gets set to true and used to change component.
     const [passwordChanged, setPasswordChanged] = useState(false);
     
+    //POST request that makes the server send the email with the reset code.
     const forgotPassword = async () => {
         if(email){
         fetch('/api/auth/forgotpassword', {
+            //Request data
             method: 'post',
             body: JSON.stringify({
                 email: email
@@ -42,8 +47,8 @@ const PanelForgotPassword = ({landingPagePanels}) => {
           }
       }
 
+      //POST request that sends the reset token and new password.
       const resetPasswordHandler = async () => {
-        console.log({email: email, resetCode: resetCode, newPassword: newPassword});
         if(email && resetCode && newPassword){
         fetch('/api/auth/resetpassword', {
         method: 'post',

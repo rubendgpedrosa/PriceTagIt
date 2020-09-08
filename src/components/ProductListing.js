@@ -5,41 +5,53 @@ import ProductCreate from './ProductCreate';
 import Alert from './Alert';
 
 function App({loggedUser}) {
+  //All the data we basically want to populate.
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
+  //While the data is loading, we use this to show stuff.
   const [isLoading, setIsLoading] = useState(true);
+  //Search string.
   const [term, setTerm] = useState('');
+  //Helps change to the add component.
   const [addNew, setAddNew] = useState(false);
   const [alert, setAlert] = useState(false);
   const [alertType, setAlertType] = useState(10);
 
+  //Function that fets call to populate the data early. Reacts to changes to loggedUser.
   useEffect(() => {
-    if(loggedUser !== undefined){
-      getData().then(setIsLoading(false));
-    }
+    getData().then(setIsLoading(false));
   }, [loggedUser]);
 
+  //Actual function to get all the data.
   const getData = async () => {
-  await fetch('/api/products', {headers: new Headers({
-    'Authorization': 'Bearer ' + loggedUser, 
-    'Content-Type': 'application/json'
+    //Issue with double request when loggedUser is first undefined.
+    if(loggedUser !== undefined){
+    await fetch('/api/products', 
+    //We use our token to authenticate every request.
+    {headers: new Headers({
+      'Authorization': 'Bearer ' + loggedUser, 
+      'Content-Type': 'application/json'
+      }), 
+      })
+    .then(res => res.json())
+    .then((result) => {
+      setProducts(result);
+    }).then(
+    fetch('/api/categories', 
+    //We use our token to authenticate every request.
+    {headers: new Headers({
+      'Authorization': 'Bearer ' + loggedUser, 
+      'Content-Type': 'application/json'
     }), 
-    })
-  .then(res => res.json())
-  .then((result) => {
-    setProducts(result);
-  }).then(
-  fetch('/api/categories', {headers: new Headers({
-    'Authorization': 'Bearer ' + loggedUser, 
-    'Content-Type': 'application/json'
-  }), 
-})
-  .then(res => res.json())
-  .then((result) => {
-      setCategories(result);
-  }))
+  })
+    .then(res => res.json())
+    .then((result) => {
+        setCategories(result);
+    }))
+  }
 };
 
+//Function used to create the new object received from ProductCreate component..
 const createProductHandler = async (product) => {
   product.src = product.category+'.svg';
   console.log(loggedUser);
@@ -49,6 +61,7 @@ const createProductHandler = async (product) => {
     body: JSON.stringify({
       product: product
     }),
+    //Again, we send the token on every account related request.
     headers: new Headers({"Content-Type": "application/json", 'Authorization': 'Bearer ' + loggedUser})
   }).then(function(response) {
     return response.json();
@@ -65,6 +78,7 @@ const createProductHandler = async (product) => {
   })
 };
 
+//When we delete, we also send a token and the id related to the object.
 const deleteItemHandler = async (product) => {
   fetch('/api/products/'+product.id, {
     method: 'delete',

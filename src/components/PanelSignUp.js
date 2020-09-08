@@ -3,12 +3,13 @@ import React, {useState} from 'react';
 const PanelSignUp = ({landingPagePanels}) => {
     const [newAccount, setNewAccount] = useState({email: '', password: ''});
     const [error, setError] = useState(false);
+    //Used to set the alert message.
     const [msg, setMsg] = useState();
     const [success, setSuccess] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
     const signUp = async (loginInformation) => {
-        //console.log(loginInformation);
+        //If the object being sent is not empty, we can send it!
         if(newAccount.password && newAccount.email){
         fetch('/api/auth/register', {
             method: 'post',

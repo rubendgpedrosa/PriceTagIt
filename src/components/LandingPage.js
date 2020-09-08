@@ -4,9 +4,11 @@ import PanelForgotPassword from './PanelForgotPassword';
 import PanelSignUp from './PanelSignUp';
 
 const LandingPage = ({ login, errorAlert }) => {
-    const [landingPagePanels, setLandingPagePanels] = useState('forgotPassword');
+    //Determines which components to show currently.
+    const [landingPagePanels, setLandingPagePanels] = useState('login');
 
     const renderSwitch =() => {
+        //Simple switch case that checks which value string is stored and shows the according component.
         switch(landingPagePanels) {
             case 'forgotPassword':
             return <PanelForgotPassword landingPagePanels={() => setLandingPagePanels('login')}/>;

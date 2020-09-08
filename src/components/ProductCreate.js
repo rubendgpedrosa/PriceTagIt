@@ -1,12 +1,16 @@
 import React, {useState} from 'react';
 
 const ProductCreate = ({submitProduct, categories}) => {
+    //This one is used to reset the product submitted.
     const [emptyProduct] = useState({name: '', regular_price: '', promotion_price: '', store: '', category: ''});
     const [newProduct, setNewProduct] = useState({name: '', regular_price: '', promotion_price: '', store: '', category: ''});
 
+    //Sends the object to the parent component.
     const onSubmit = (e) => {
+        //Prevents normal submit behaviour.
         e.preventDefault();
         submitProduct(newProduct);
+        //We reset it here!
         setNewProduct(emptyProduct);
     }
 
