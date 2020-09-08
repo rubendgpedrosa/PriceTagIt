@@ -49,19 +49,6 @@ app.listen(port);
 //** THESE ROUTES ARE NOT PROTECTED. **//
 //Login route that receives an email and password, compares the password received with thestored hashed one.
 app.post('/api/auth/login', (request, response) => {
-  //This account exists solely for testing. COMMENT OUT THIS LATER IF NEEDED
-  if(request.body.loginInformation.email === 'test' && request.body.loginInformation.password === 'test'){
-    const payload = {
-      id: 0,
-      email: request.body.loginInformation.email,
-      password: request.body.loginInformation.password,
-      scopes: ["products", "categories"]
-    };
-  
-    const token = jwt.sign(payload, config.JWT_SECRET);
-    response.send({token: token});
-    response.end();
-  }else{
   if (request.body.loginInformation.email && request.body.loginInformation.password) {
     var sql =`SELECT * FROM accounts WHERE email = ?;`;
     //We firrst check if the account actually exists of course.
@@ -90,7 +77,7 @@ app.post('/api/auth/login', (request, response) => {
         response.send('No account found!');
       }
     });
-  };}
+  };
 });
 
 //A user is registered by receiveing a password and email.

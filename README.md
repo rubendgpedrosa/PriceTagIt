@@ -1,6 +1,6 @@
 # Price Tag It - React, Express & Tailwind CSS 
 
-Simple Web Mobile Application that lets you store information about supermarket products like pricing and discount prices using an Express server to handle all the API requests. Tailwind css is built into workflow with postcss and autoprefixer.
+Simple Web Mobile Application that lets you store information about supermarket products like pricing and discount prices using an Express server to handle all the API requests. MySQL stores all the accounts and products related to each account. Tailwind css is built into workflow with postcss and autoprefixer.
 
 ## Usage
 Create an account and start adding your products to your list to keep track of prices and discounts.
@@ -19,9 +19,6 @@ npm run build
 node ./node_server/server.js
 ```
 
-Testing account and password: test
-
-
 ##### Login page
 ![Login Page](/demo/loginpage.png)
 
@@ -30,7 +27,3 @@ Testing account and password: test
 
 ##### Product list and filter
 ![Product List](/demo/productlist.png)
-
-
-
-[PriceTagIt]: <http://rubendgpedrosa.me/pricetagit/>
