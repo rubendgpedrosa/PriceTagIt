@@ -115,7 +115,7 @@ const PanelForgotPassword = ({landingPagePanels}) => {
                     </div>
                 }</label>
                 </div>
-                <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type={showPassword? 'text':'password'} autoComplete="off" value={newPassword} onChange={event => setNewPassword(event.target.value)}  />
+                <input required className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type={showPassword? 'text':'password'} autoComplete="off" value={newPassword} onChange={event => setNewPassword(event.target.value)}  />
             </div>
         </div>
         </div>
@@ -126,7 +126,7 @@ const PanelForgotPassword = ({landingPagePanels}) => {
             </label>
         </div>
         <div className="md:w-2/3">
-            <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" value={resetCode} onChange={event => setResetCode(event.target.value)}/>
+            <input required className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" value={resetCode} onChange={event => setResetCode(event.target.value)}/>
         </div>
         </div>
         <div className="md:flex md:items-center">
@@ -149,7 +149,7 @@ const PanelForgotPassword = ({landingPagePanels}) => {
             </label>
         </div>
         <div className="md:w-2/3">
-            <input className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" value={email} onChange={event => setEmail(event.target.value)}/>
+            <input required className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="text" value={email} onChange={event => setEmail(event.target.value)}/>
         </div>
         </div>
         <div className="md:flex md:items-center">

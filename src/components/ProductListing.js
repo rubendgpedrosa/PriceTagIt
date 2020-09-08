@@ -54,8 +54,9 @@ function App({loggedUser}) {
 const createProductHandler = async (product) => {
   //We set the product image from it's category.
   product.src = product.category ? product.category.toLowerCase().split(" ").join("")+'.svg':'other.svg';
-  console.log(loggedUser);
   product.account_id = loggedUser.id;
+  //Treat data before sending it to db
+  product.regular_price = product.regular_price.split(" ").join("");
   fetch('/api/products', {
     method: 'post',
     body: JSON.stringify({
