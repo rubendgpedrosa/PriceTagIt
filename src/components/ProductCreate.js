@@ -11,6 +11,11 @@ const ProductCreate = ({submitProduct, categories}) => {
         //Prevents normal submit behaviour.
         e.preventDefault();
         if(newProduct.name && newProduct.regular_price){
+        //Treat data before sending it to db
+            newProduct.regular_price = parseFloat(newProduct.regular_price).toFixed(2)
+            if(newProduct.promotion_price){
+                newProduct.promotion_price = parseFloat(newProduct.promotion_price).toFixed(2)
+            }
             submitProduct(newProduct);
             //We reset it here!
             setNewProduct(emptyProduct);
