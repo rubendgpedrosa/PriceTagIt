@@ -6,17 +6,29 @@ module.exports = {
     PASSWORD: 'kuooyoabjdwxfoxi'
   };
 
-/*AISLES CATEGORIES LIST
-INSERT INTO
-  categories (name)
-VALUES
-('Alcoholic Drinks'), ('Baby Products'), ('Bakery'),
-('Beverages'), ('Canned Foods'), ('Car Care products'),
-('Clothes'), ('Coffee, Tea & Hot Chocolate'), ('Cosmetics'), 
-('Dairy Products'), ('Diet Foods'), ('Electrical Products'),
-('Fish & Seafood'), ('Frozen'), ('Fruits & Vegetables'), ('Grains & Pasta'), ('Home & Kitchen'), 
-('Home Baking'), ('House-Cleaning Products'), ('Meat, Poultry & Sausages'), 
-('Newspapers'), ('Office Supplies'), ('Oils'), ('Other'), ('Personal Hygiene'), 
-('Pet Supplies'), ('Pharmacy'), ('Preserves'), ('Ready Meals'), 
-('Snacks & Candy'), ('Spices, Sauces & Condiments');
+/*Products table
+CREATE TABLE `products` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `reference` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `src` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT 'product_default.png',
+  `category` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cross_reference` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `price` decimal(20,2) DEFAULT NULL,
+  `brand` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` longtext COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `products_reference_unique` (`reference`)
+)
+
+CREATE TABLE `accounts` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `password` varchar(255) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `reset_code` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+)
 */
