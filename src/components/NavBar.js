@@ -1,7 +1,7 @@
 import React from 'react';
 import ProductSearch from './ProductSearch';
 
-const NavBar = ({ product, selectedCategory, searchText, addNew, changeWindow, categories }) => {
+const NavBar = ({ product, selectedCategory, searchText, addNew, changeWindow, categories, editItem }) => {
   return (
     <div>
         <nav className="flex items-center mt-0 fixed w-full z-10 top-0 justify-between flex-wrap bg-blue-500 p-4 shadow">
@@ -18,7 +18,7 @@ const NavBar = ({ product, selectedCategory, searchText, addNew, changeWindow, c
         </button>
 
         </nav>
-        { !addNew && <ProductSearch categories={categories} searchText={(text) => searchText(text)} selectedCategory={(category) => selectedCategory(category)}/>}
+        { !addNew && !editItem && <ProductSearch categories={categories} searchText={(text) => searchText(text)} selectedCategory={(category) => selectedCategory(category)}/>}
     </div>
   )
 }

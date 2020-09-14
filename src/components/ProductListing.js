@@ -3,6 +3,7 @@ import ProductCard from './ProductCard';
 import NavBar from './NavBar';
 import ProductCreate from './ProductCreate';
 import Alert from './Alert';
+import ProductEdit from './ProductEdit';
 
 function App({loggedUser}) {
   //All the data we basically want to populate.
@@ -17,6 +18,8 @@ function App({loggedUser}) {
   const [addNew, setAddNew] = useState(false);
   const [alert, setAlert] = useState(false);
   const [alertType, setAlertType] = useState(10);
+  //Editing
+  const [editItem, setEditItem] = useState({});
 
   //Function that fets call to populate the data early. Reacts to changes to loggedUser.
   useEffect(() => {
@@ -98,32 +101,41 @@ const deleteItemHandler = async (product) => {
   });
 };
 
+const editProductHandler = (product) => {
+  console.log(product);
+}
+
 const topFunction = () => {
   window.scrollTo({top: 0, behavior: "smooth"})
 }
+
 return (
   <div>
     {/* NAVIGATION BAR AND SEARCH INPUT */}
-    <NavBar categories={categories} selectedCategory={(category) => setSelectedCategory(category)} searchText={(text) => setTerm(text)} addNew={addNew} changeWindow={(changed => setAddNew(!addNew))}/>
+    {<NavBar categories={categories} selectedCategory={(category) => setSelectedCategory(category)} searchText={(text) => setTerm(text)} addNew={addNew} changeWindow={(changed => setAddNew(!addNew))} editItem={editItem.id !== undefined}/>}
+
 	<div className="container mx-auto bg-white md:mt-16 h-full overflow-y-auto pb-4">
     {!addNew && !isLoading && products.length === 0 && <h1 className="text-5xl text-center mx-auto mt-32">Empty List</h1> }
-    {addNew ? <ProductCreate categories={categories} submitProduct={(product) => createProductHandler(product)}/>: (
-    isLoading ? <h1 className="text-6xl text-center mx-auto mt-32">Loading...</h1> :
-    <div className="grid grid-cols-1 px-4">
-      {products.filter(product => selectedCategory?
-      product.category === selectedCategory: product.name.toUpperCase().includes(term.toUpperCase()))
-      .map(product => (
-        <div key={product.id}>
-          {product.name.includes(selectedCategory)}
-        <ProductCard key={product.id} product={product} deleteItem={(product) => deleteItemHandler(product)} />
-        </div>
-      ))}
-      <button onClick={() => topFunction()} id="myBtn" style={{zIndex:10}} className="focus:outline-none fixed rounded-full shadow-md p-2 bg-blue-300 hover:bg-blue-400 text-white" style={{bottom: 25,left:25}} title="Go to top">
+
+    {addNew ?
+    <ProductCreate categories={categories} submitProduct={(product) => createProductHandler(product)}/>:
+    (isLoading ? <h1 className="text-6xl text-center mx-auto mt-32">Loading...</h1>:
+    (!editItem.id ? <div className="grid grid-cols-1 px-4">
+    {products.filter(product => selectedCategory?
+    product.category === selectedCategory: product.name.toUpperCase().includes(term.toUpperCase()))
+    .map(product => (
+      <div key={product.id}>
+        {product.name.includes(selectedCategory)}
+      <ProductCard key={product.id} product={product} deleteItem={(product) => deleteItemHandler(product)} editItem={(product) => setEditItem(product)}/>
+      </div>
+    ))}
+    <button onClick={() => topFunction()} id="myBtn" style={{zIndex:10}} className="focus:outline-none fixed rounded-full shadow-md p-2 bg-blue-300 hover:bg-blue-400 text-white" style={{bottom: 25,left:25}} title="Go to top">
     <svg className="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 11l7-7 7 7M5 19l7-7 7 7" />
     </svg>
     </button>
-      </div>)}
+    </div>:
+    <ProductEdit setEditItem={() => setEditItem()} product={editItem} categories={categories} submitProduct={(product) => editProductHandler(product)}/>))}
 	  </div>
     {alert && <Alert created={alertType}/>}
   </div>

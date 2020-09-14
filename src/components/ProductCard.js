@@ -1,16 +1,15 @@
 import React, {useState} from 'react';
 
-const ProductCard = ({ product, deleteItem }) => {
+const ProductCard = ({ product, deleteItem, editItem }) => {
   //Checks if the user really wants to delete.
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const [editProduct, setEditProduct] = useState(false);
 
   return (
     <div className="relative items-center max-w-sm mx-auto">
       <div className="h-24 static flex items-center w-sm border-solid border-l-8 border-blue-200 border mb-2 mx-auto flex p-2 rounded-md">
 
       {/* EDIT BUTTON */}
-      <button onClick={() => setEditProduct(!editProduct)} className="absolute right-0 mr-6 top-0 text-gray-700 rounded-full p-1 focus:outline-none">
+      <button onClick={() => editItem(product)} className="absolute right-0 mr-6 top-0 text-gray-700 rounded-full p-1 focus:outline-none">
         <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
           <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
           <path fillRule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clipRule="evenodd" />
