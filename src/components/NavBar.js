@@ -1,7 +1,7 @@
 import React from 'react';
 import ProductSearch from './ProductSearch';
 
-const ProductCard = ({ product, searchText, addNew, changeWindow }) => {
+const NavBar = ({ product, selectedCategory, searchText, addNew, changeWindow, categories }) => {
   return (
     <div>
         <nav className="flex items-center mt-0 fixed w-full z-10 top-0 justify-between flex-wrap bg-blue-500 p-4 shadow">
@@ -18,9 +18,9 @@ const ProductCard = ({ product, searchText, addNew, changeWindow }) => {
         </button>
 
         </nav>
-        { !addNew && <ProductSearch searchText={(text) => searchText(text)} />}
+        { !addNew && <ProductSearch categories={categories} searchText={(text) => searchText(text)} selectedCategory={(category) => selectedCategory(category)}/>}
     </div>
   )
 }
 
-export default ProductCard;
+export default NavBar;

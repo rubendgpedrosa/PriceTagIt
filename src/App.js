@@ -10,7 +10,6 @@ const [errorAlert, setErrorAlert] = useState(false);
 //Login fetch POST request sending login data.
 const login = async (loginInformation) => {
   //console.log(loginInformation);
-  console.log(loginInformation.token);
   if(loginInformation.password && loginInformation.email){
   fetch('/api/auth/login', {
     method: 'post',

@@ -12,6 +12,7 @@ function App({loggedUser}) {
   const [isLoading, setIsLoading] = useState(true);
   //Search string.
   const [term, setTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
   //Helps change to the add component.
   const [addNew, setAddNew] = useState(false);
   const [alert, setAlert] = useState(false);
@@ -100,20 +101,19 @@ const deleteItemHandler = async (product) => {
 const topFunction = () => {
   window.scrollTo({top: 0, behavior: "smooth"})
 }
-
 return (
   <div>
-    <NavBar searchText={(text) => setTerm(text)} addNew={addNew} changeWindow={(changed => setAddNew(!addNew))}/>
+    <NavBar categories={categories} selectedCategory={(category) => setSelectedCategory(category)} searchText={(text) => setTerm(text)} addNew={addNew} changeWindow={(changed => setAddNew(!addNew))}/>
 	<div className="container mx-auto bg-white md:mt-16 h-full overflow-y-auto pb-4">
     {!addNew && !isLoading && products.length === 0 && <h1 className="text-5xl text-center mx-auto mt-32">Empty List</h1> }
     {addNew ? <ProductCreate categories={categories} submitProduct={(product) => createProductHandler(product)}/>: (
     isLoading ? <h1 className="text-6xl text-center mx-auto mt-32">Loading...</h1> :
     <div className="grid grid-cols-1 px-4">
-      
-      {products.filter(product => product.name.toUpperCase().includes(term.toUpperCase()) ||
-      product.category.toUpperCase().includes(term.toUpperCase()) || product.store.toUpperCase().includes(term.toUpperCase()))
+      {products.filter(product => selectedCategory?
+      product.category === selectedCategory: product.name.toUpperCase().includes(term.toUpperCase()))
       .map(product => (
         <div key={product.id}>
+          {product.name.includes(selectedCategory)}
         <ProductCard key={product.id} product={product} deleteItem={(product) => deleteItemHandler(product)} />
         </div>
       ))}
