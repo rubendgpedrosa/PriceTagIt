@@ -7,21 +7,17 @@ module.exports = {
   };
 
 /*Products table
-CREATE TABLE `products` (
-  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `reference` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `src` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT 'product_default.png',
-  `category` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `cross_reference` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `price` decimal(20,2) DEFAULT NULL,
-  `brand` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` longtext COLLATE utf8mb4_unicode_ci,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `products_reference_unique` (`reference`)
-)
+CREATE TABLE products (
+  id int NOT NULL AUTO_INCREMENT,
+  name varchar(255),
+  normal_price varchar(255),
+  discounted_price varchar(255),
+  category varchar(255),
+  store varchar(255),
+  src varchar(255),
+  account_id int,
+  PRIMARY KEY (id)
+);
 
 CREATE TABLE `accounts` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -30,5 +26,5 @@ CREATE TABLE `accounts` (
   `reset_code` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-)
+);
 */

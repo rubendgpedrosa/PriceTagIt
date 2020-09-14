@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 
 const LoginPanel = ( {login, errorAlert, forgotPassword, signUp} ) => {
     //Login information to send to the server
-    const [loginInformation, setLoginInformation] = useState({email: '', password: ''});
+    const [loginInformation, setLoginInformation] = useState({email: 'rubenpedrosa993@gmail.com', password: '1'});
     //This changes the password input type either to text or password.
     const [showPassword, setShowPassword] = useState(false);
 
@@ -49,7 +49,7 @@ const LoginPanel = ( {login, errorAlert, forgotPassword, signUp} ) => {
             <div className="md:flex md:items-center">
             <div className="md:w-1/3"></div>
             <div className="md:w-2/3">
-                <button onClick={() => login(loginInformation)} className="bg-blue-500 hover:bg-blue-400 focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
+                <button onClick={() => login(loginInformation, '')} className="bg-blue-500 hover:bg-blue-400 focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">
                 Log In
                 </button>
                 <div onClick={() => forgotPassword()} className="cursor-pointer float-right py-2 text-blue-500 hover:text-blue-700 active:text-blue-700">

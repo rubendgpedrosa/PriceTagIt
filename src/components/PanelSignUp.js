@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
 
-const PanelSignUp = ({landingPagePanels}) => {
+const PanelSignUp = ({landingPagePanels, login}) => {
     const [newAccount, setNewAccount] = useState({email: '', password: ''});
     const [error, setError] = useState(false);
     //Used to set the alert message.
     const [msg, setMsg] = useState();
+    const [loginInformation, setLoginInformation] = useState({token: ''});
     const [success, setSuccess] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
@@ -19,6 +20,7 @@ const PanelSignUp = ({landingPagePanels}) => {
             headers: {"Content-Type": "application/json"}
           }).then(res => res.json())
           .then((result) => {
+                setLoginInformation({token:result.token});
                 setMsg('Account created sucessfully!');
                 setSuccess(true);
           }).catch((response) => {
@@ -40,7 +42,7 @@ const PanelSignUp = ({landingPagePanels}) => {
         <div>
         {success ? <div className="text-center pt-10">
             <p className="text-green-500 font-bold">{msg}</p>
-            <p className="text-gray-700">Back to <span onClick={landingPagePanels} className="cursor-pointer text-blue-500 underline">login page</span>.</p>
+            <p className="text-gray-700"> <span onClick={() => login(loginInformation)} className="cursor-pointer text-blue-500 underline">click here</span> to start gathering your list.</p>
         </div>
         :<form className="mx-auto px1 w-full max-w-sm mb-12 pt-10">
             <div className="md:flex md:items-center mb-6">

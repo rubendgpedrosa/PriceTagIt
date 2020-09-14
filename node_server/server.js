@@ -23,7 +23,7 @@ var connection = mysql.createConnection({
   host: '172.17.0.2',
   port: 3306,
   user: 'pricetagit',
-  password: 'mysql',
+  password: 'pricetagit',
   database: 'pricetagit',
 })
 
@@ -111,7 +111,15 @@ app.post('/api/auth/register', (request, response) => {
             //We hash the random string and store it.
             bcrypt.hash(reset_code, 10, function(err, reset_code_hash){
               connection.query(sql, [request.body.loginInformation.email, hash, reset_code_hash], function (err, rows, fields) {
-                response.send(rows);
+                const payload = {
+                  id: rows.insertId,
+                  email: request.body.loginInformation.email,
+                  password: hash,
+                  scopes: ["products", "categories"]
+                };
+              
+                const token = jwt.sign(payload, config.JWT_SECRET);
+                response.send({token: token});
                 response.end();
               });
             });
@@ -253,13 +261,18 @@ app.get('/api/products', authentication("products"), (req, res) => {
   })], function (err, rows, fields) {
     if (err) console.log(err)
   //Prints the rows resulted from previous query
-    res.json(rows.reverse());
+  //We are careful in case we get undefined
+    if(rows !== undefined){
+      res.json(rows.reverse());
+    }else{
+      res.json(rows);
+    }
   })
 });
 
 //Inserting in the database needs to have the correct token
 app.post('/api/products', authentication("products"), (req, res) => {
-  var sql = `INSERT INTO products (name, regular_price, promotion_price, category, store, src, account_id) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+  var sql = `INSERT INTO products (name, normal_price, discounted_price, category, store, src, account_id) VALUES (?, ?, ?, ?, ?, ?, ?)`;
    //Insert into the db. Nothing special.
   connection.query(sql, [req.body.product.name, req.body.product.regular_price.replace(",", "."), req.body.product.promotion_price.replace(",", "."), req.body.product.category, req.body.product.store, req.body.product.src, jwt.verify(req.headers["authorization"].slice(7), config.JWT_SECRET, (err, decoded) => {
     return decoded.id

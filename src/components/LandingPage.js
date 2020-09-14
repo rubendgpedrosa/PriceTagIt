@@ -13,7 +13,7 @@ const LandingPage = ({ login, errorAlert }) => {
             case 'forgotPassword':
             return <PanelForgotPassword landingPagePanels={() => setLandingPagePanels('login')}/>;
             case 'signUp':
-            return <PanelSignUp landingPagePanels={() => setLandingPagePanels('login')}/>;
+            return <PanelSignUp login={login} landingPagePanels={() => setLandingPagePanels('login')}/>;
             default: return <PanelLogin login={login} errorAlert={errorAlert} forgotPassword={() => setLandingPagePanels('forgotPassword')} signUp={() => setLandingPagePanels('signUp')}/>;
         }
       }

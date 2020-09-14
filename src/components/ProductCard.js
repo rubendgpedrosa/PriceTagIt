@@ -25,8 +25,8 @@ const ProductCard = ({ product, deleteItem }) => {
           <p className  ="text-xs text-gray-600 leading-normal">{product.store.toUpperCase()}</p>
         </div>
         <div className="w-1/4 ml-6 pt-1 mr-2">
-          <h4 className="text-lg items-end font-bold text-green-600 leading-tight uppercase">{product.promotion_price? product.promotion_price+'€':'N/A'}</h4>
-          <p className="text-sm font-bold text-gray-500 leading-normal">{product.regular_price+'€'}</p>
+          <h4 className="text-lg items-end font-bold text-green-600 leading-tight uppercase">{product.discounted_price? product.discounted_price+'€':'N/A'}</h4>
+          <p className="text-sm font-bold text-gray-500 leading-normal">{product.normal_price+'€'}</p>
         </div>
       </div>
     </div>

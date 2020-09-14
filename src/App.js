@@ -10,6 +10,7 @@ const [errorAlert, setErrorAlert] = useState(false);
 //Login fetch POST request sending login data.
 const login = async (loginInformation) => {
   //console.log(loginInformation);
+  console.log(loginInformation.token);
   if(loginInformation.password && loginInformation.email){
   fetch('/api/auth/login', {
     method: 'post',
@@ -26,7 +27,10 @@ const login = async (loginInformation) => {
     setTimeout(function(){
       setErrorAlert(false);
     },2000);
-  })}else{
+  })} else if(loginInformation.token) {
+    setIsLoggedIn(true);
+    setLoggedUser(loginInformation.token);
+  }else{
     setErrorAlert(true);
     setTimeout(function(){
       setErrorAlert(false);
