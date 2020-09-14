@@ -103,6 +103,7 @@ const topFunction = () => {
 }
 return (
   <div>
+    {/* NAVIGATION BAR AND SEARCH INPUT */}
     <NavBar categories={categories} selectedCategory={(category) => setSelectedCategory(category)} searchText={(text) => setTerm(text)} addNew={addNew} changeWindow={(changed => setAddNew(!addNew))}/>
 	<div className="container mx-auto bg-white md:mt-16 h-full overflow-y-auto pb-4">
     {!addNew && !isLoading && products.length === 0 && <h1 className="text-5xl text-center mx-auto mt-32">Empty List</h1> }

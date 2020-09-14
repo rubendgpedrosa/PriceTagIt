@@ -274,7 +274,7 @@ app.get('/api/products', authentication("products"), (req, res) => {
 app.post('/api/products', authentication("products"), (req, res) => {
   var sql = `INSERT INTO products (name, normal_price, discounted_price, category, store, src, account_id) VALUES (?, ?, ?, ?, ?, ?, ?)`;
    //Insert into the db. Nothing special.
-  connection.query(sql, [req.body.product.name, req.body.product.regular_price.replace(",", "."), req.body.product.promotion_price.replace(",", "."), req.body.product.category, req.body.product.store, req.body.product.src, jwt.verify(req.headers["authorization"].slice(7), config.JWT_SECRET, (err, decoded) => {
+  connection.query(sql, [req.body.product.name, req.body.product.normal_price.replace(",", "."), req.body.product.discounted_price.replace(",", "."), req.body.product.category, req.body.product.store, req.body.product.src, jwt.verify(req.headers["authorization"].slice(7), config.JWT_SECRET, (err, decoded) => {
     return decoded.id
   })], function (err, rows, fields) {
     if (err) console.log(err)
