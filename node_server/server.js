@@ -272,11 +272,20 @@ app.get('/api/products', authentication("products"), (req, res) => {
 
 //Inserting in the database needs to have the correct token
 app.post('/api/products', authentication("products"), (req, res) => {
-  var sql = `INSERT INTO products (name, normal_price, discounted_price, category, store, src, account_id) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+  var sql = `INSERT INTO products (name, normal_price, discounted_price, category, store, src, account_id) VALUES (?, ?, ?, ?, ?, ?, ?);`;
    //Insert into the db. Nothing special.
   connection.query(sql, [req.body.product.name, req.body.product.normal_price.replace(",", "."), req.body.product.discounted_price.replace(",", "."), req.body.product.category, req.body.product.store, req.body.product.src, jwt.verify(req.headers["authorization"].slice(7), config.JWT_SECRET, (err, decoded) => {
     return decoded.id
   })], function (err, rows, fields) {
+    if (err) console.log(err)
+    res.json(rows);
+  });
+});
+
+app.patch('/api/products/:id', authentication("products"), (req, res) => {
+  var sql = `UPDATE products SET name = ?, normal_price = ?, discounted_price = ?, category = ?, store = ?, src = ? WHERE id = ?;`;
+   //Insert into the db. Nothing special.
+  connection.query(sql, [req.body.product.name, req.body.product.normal_price.replace(",", "."), req.body.product.discounted_price.replace(",", "."), req.body.product.category, req.body.product.store, req.body.product.src, req.body.product.id], function (err, rows, fields) {
     if (err) console.log(err)
     res.json(rows);
   });

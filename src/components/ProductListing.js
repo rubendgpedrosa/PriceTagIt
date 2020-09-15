@@ -101,9 +101,26 @@ const deleteItemHandler = async (product) => {
   });
 };
 
-const editProductHandler = (product) => {
-  console.log(product);
-}
+const editProductHandler = async (product) => {
+  fetch('/api/products/'+product.id, {
+    method: 'PATCH',
+    body: JSON.stringify({
+      product: product
+    }),
+    headers: new Headers({"Content-Type": "application/json", 'Authorization': 'Bearer ' + loggedUser})
+  }).then(function(response) {
+    return response.json();
+  }).then(function() {
+    setProducts(products.filter(p => p.id !== product.id));
+  }).then(function (){
+    let tempArray = [...products];
+    let index = products.map(p => p.id).indexOf(product.id);
+    tempArray[index] = product;
+    setProducts([...tempArray]);
+    setEditItem({});
+    //TODO ALERT
+  });
+};
 
 const topFunction = () => {
   window.scrollTo({top: 0, behavior: "smooth"})
@@ -112,7 +129,7 @@ const topFunction = () => {
 return (
   <div>
     {/* NAVIGATION BAR AND SEARCH INPUT */}
-    {<NavBar categories={categories} selectedCategory={(category) => setSelectedCategory(category)} searchText={(text) => setTerm(text)} addNew={addNew} changeWindow={(changed => setAddNew(!addNew))} editItem={editItem.id !== undefined}/>}
+    {<NavBar categories={categories} selectedCategory={(category) => setSelectedCategory(category)} searchText={(text) => setTerm(text)} addNew={addNew} changeWindow={(changed) => {setAddNew(!addNew); setEditItem({})}} editItem={editItem.id !== undefined}/>}
 
 	<div className="container mx-auto bg-white md:mt-16 h-full overflow-y-auto pb-4">
     {!addNew && !isLoading && products.length === 0 && <h1 className="text-5xl text-center mx-auto mt-32">Empty List</h1> }
@@ -135,7 +152,7 @@ return (
     </svg>
     </button>
     </div>:
-    <ProductEdit setEditItem={() => setEditItem()} product={editItem} categories={categories} submitProduct={(product) => editProductHandler(product)}/>))}
+    <ProductEdit setEditItem={() => setEditItem()} product={editItem} categories={categories} submitProduct={(product) => editProductHandler(product)} cancelEdit={()=>setEditItem({})}/>))}
 	  </div>
     {alert && <Alert created={alertType}/>}
   </div>
