@@ -17,7 +17,8 @@ function App({loggedUser}) {
   //Helps change to the add component.
   const [addNew, setAddNew] = useState(false);
   const [alert, setAlert] = useState(false);
-  const [alertType, setAlertType] = useState(10);
+  const [alertType, setAlertType] = useState(2);
+  const [msg, setMsg] = useState('');
   //Editing
   const [editItem, setEditItem] = useState({});
 
@@ -74,6 +75,7 @@ const createProductHandler = async (product) => {
     tempArray.unshift(product);
     setProducts(tempArray);
     setAlertType(1);
+    setMsg('Product created sucessfully!');
     setAlert(true);
     setTimeout(function(){
       setAlert(false);
@@ -93,7 +95,8 @@ const deleteItemHandler = async (product) => {
     return response.json();
   }).then(function() {
     setProducts(products.filter(p => p.id !== product.id));
-    setAlertType(0);
+    setAlertType(1);
+    setMsg('Product deleted sucessfully!');
     setAlert(true);
     setTimeout(function(){
       setAlert(false);
@@ -115,10 +118,15 @@ const editProductHandler = async (product) => {
   }).then(function (){
     let tempArray = [...products];
     let index = products.map(p => p.id).indexOf(product.id);
+    setMsg('Product edited sucessfully!');
     tempArray[index] = product;
     setProducts([...tempArray]);
     setEditItem({});
-    //TODO ALERT
+    setAlertType(1);
+    setAlert(true);
+    setTimeout(function(){
+      setAlert(false);
+    },2000);
   });
 };
 
@@ -154,7 +162,8 @@ return (
     </div>:
     <ProductEdit setEditItem={() => setEditItem()} product={editItem} categories={categories} submitProduct={(product) => editProductHandler(product)} cancelEdit={()=>setEditItem({})}/>))}
 	  </div>
-    {alert && <Alert created={alertType}/>}
+
+    {alert && <Alert msg={msg} created={alertType}/>}
   </div>
   );
 }

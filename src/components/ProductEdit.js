@@ -6,14 +6,14 @@ const ProductEdit = ({product, categories, submitProduct, cancelEdit }) => {
     const [errorCreate, setErrorCreate] = useState(false);
     const [msg, setMsg] = useState('');
     const [successColor, setSuccessColor] = useState(false);
+    const [cancel, setCancel] = useState(false);
 
     //Sends the object to the parent component.
     const onSubmit = (e) => {
         //Prevents normal submit behaviour.
         e.preventDefault();
-
         //If it's a normal submit
-        if(e.target.getAttribute('name') === ''){
+        if(!cancel){
         if(newProduct.name && newProduct.category){
         //Treat data before sending it to db
             newProduct.normal_price = parseFloat(newProduct.normal_price).toFixed(2)
@@ -21,12 +21,6 @@ const ProductEdit = ({product, categories, submitProduct, cancelEdit }) => {
                 newProduct.discounted_price = parseFloat(newProduct.discounted_price).toFixed(2)
             }
             submitProduct(newProduct);
-            setMsg('Product edited sucessfully!');
-            setSuccessColor(true);
-            setErrorCreate(true);
-            setTimeout(function(){
-                setErrorCreate(false);
-            },3000);
         }else{
             setMsg('Please insert a name for the Product!');
             setSuccessColor(false);
@@ -56,10 +50,9 @@ const ProductEdit = ({product, categories, submitProduct, cancelEdit }) => {
                 {categories.map((category, index) => <option  key={index} value={category.name}>{category.name}</option>)}
                 </select>
             </div>
-            <button className="bg-blue-500 p-2 rounded mt-10 text-gray-100 focus:outline-none">Submit</button>
-            <button name="cancel" className="ml-4 bg-red-500 p-2 rounded mt-10 text-gray-100 focus:outline-none">Cancel</button>
+            <button id="1" className="bg-blue-500 p-2 rounded mt-10 text-gray-100 focus:outline-none">Submit</button>
+            <button id="0" onClick={() => setCancel(true)} className="ml-4 bg-red-500 p-2 rounded mt-10 text-gray-100 focus:outline-none">Cancel</button>
             </form>
-
 
 
             {/* Alert when submitting */}
