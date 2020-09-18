@@ -43,9 +43,15 @@ const login = async (loginInformation) => {
   }
 }
 
+const logoffHandler = () => {
+  localStorage.clear();
+  setIsLoggedIn();
+  setLoggedUser();
+}
+
 return (
   <div>
-    {isLoggedIn?<ProductListing loggedUser={loggedUser}/>:
+    {isLoggedIn?<ProductListing loggedUser={loggedUser} logoffHandler={logoffHandler}/>:
     <div><LandingPage login={(loginInformation) => login(loginInformation)} errorAlert={errorAlert} setLoggedUser={(user) => setLoggedUser(user)}/></div>}
   </div>
   );
