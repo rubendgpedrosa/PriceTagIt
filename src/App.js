@@ -3,9 +3,14 @@ import ProductListing from './components/ProductListing';
 import LandingPage from './components/LandingPage';
 
 function App() {
-const [isLoggedIn, setIsLoggedIn] = useState(false);
-const [loggedUser, setLoggedUser] = useState();
+const [isLoggedIn, setIsLoggedIn] = React.useState(
+  localStorage.getItem('token')? true:false
+);
+const [loggedUser, setLoggedUser] = React.useState(
+  localStorage.getItem('token') || false
+);
 const [errorAlert, setErrorAlert] = useState(false);
+
 
 //Login fetch POST request sending login data.
 const login = async (loginInformation) => {
@@ -21,6 +26,7 @@ const login = async (loginInformation) => {
   .then((result) => {
     setIsLoggedIn(true);
     setLoggedUser(result.token);
+    localStorage.setItem('token', result.token);
   }).catch(async (response) => {
     setErrorAlert(true);
     setTimeout(function(){
