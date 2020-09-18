@@ -16,6 +16,7 @@ const ProductEdit = ({product, categories, submitProduct, cancelEdit }) => {
         if(!cancel){
         if(newProduct.name && newProduct.category){
         //Treat data before sending it to db
+            newProduct.src = newProduct.category ? newProduct.category.toLowerCase().split(" ").join("")+'.svg':'other.svg';
             newProduct.normal_price = parseFloat(newProduct.normal_price).toFixed(2)
             if(newProduct.discounted_price){
                 newProduct.discounted_price = parseFloat(newProduct.discounted_price).toFixed(2)
