@@ -5,8 +5,8 @@ const NavBar = ({ logoffHandler, product, selectedCategory, searchText, addNew, 
   return (
     <div>
         <nav className="flex items-center mt-0 fixed w-full z-10 top-0 justify-between flex-wrap bg-blue-500 p-3 shadow">
-        <div class="flex w-full text-center items-center">
-          <div class="w-1/6">
+        <div className="flex w-full text-center items-center">
+          <div className="w-1/6">
           <button onClick={changeWindow} className="focus:outline-none bg-blue-500 text-blue-100 font-bold py-2 px-2 rounded inline-flex items-center">
           {(!addNew && !editItem) ?<svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -16,10 +16,10 @@ const NavBar = ({ logoffHandler, product, selectedCategory, searchText, addNew, 
         </svg>}
           </button>
           </div>
-          <div class="w-2/3 text-gray-100">
+          <div className="w-2/3 text-gray-100">
             <span className="font-semibold text-2xl tracking-tight">PRICE TAG IT</span>
           </div>
-          <div class="w-1/6">
+          <div className="w-1/6">
           <button onClick={logoffHandler} className="pr-0 pl-0 focus:outline-none bg-blue-500 text-blue-100 font-bold py-2 px-4 rounded-full inline-flex items-center">
           <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clipRule="evenodd" />
