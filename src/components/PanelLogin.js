@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 
 const LoginPanel = ( {login, errorAlert, forgotPassword, signUp} ) => {
     //Login information to send to the server
-    const [loginInformation, setLoginInformation] = useState({email: 'rubenpedrosa993@gmail.com', password: '1'});
+    const [loginInformation, setLoginInformation] = useState({email: '', password: ''});
     //This changes the password input type either to text or password.
     const [showPassword, setShowPassword] = useState(false);
 
