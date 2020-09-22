@@ -21,6 +21,7 @@ function App({loggedUser, logoffHandler}) {
   const [msg, setMsg] = useState('');
   //Editing
   const [editItem, setEditItem] = useState({});
+  const [scrollY, setScrollY] = useState(0);
 
   //Function that fets call to populate the data early. Reacts to changes to loggedUser.
   useEffect(() => {
@@ -130,6 +131,20 @@ const editProductHandler = async (product) => {
   });
 };
 
+function logit() {
+  setScrollY(window.pageYOffset);
+}
+
+useEffect(() => {
+  function watchScroll() {
+    window.addEventListener("scroll", logit);
+  }
+  watchScroll();
+  return () => {
+    window.removeEventListener("scroll", logit);
+  };
+});
+
 const topFunction = () => {
   window.scrollTo({top: 0, behavior: "smooth"})
 }
@@ -155,11 +170,11 @@ return (
       <ProductCard key={product.id} product={product} deleteItem={(product) => deleteItemHandler(product)} editItem={(product) => setEditItem(product)}/>
       </div>
     ))}
-    <button onClick={() => topFunction()} id="myBtn" style={{zIndex:10}} className="focus:outline-none fixed rounded-full shadow-md p-2 bg-blue-300 hover:bg-blue-400 text-white" style={{bottom: 25,left:25}} title="Go to top">
+    {products.length > 0 && scrollY > 0 && <button id="scroll" onClick={() => topFunction()} id="myBtn" style={{zIndex:10}} className="focus:outline-none display-none fixed rounded-full shadow-md p-2 bg-blue-300 hover:bg-blue-400 text-white" style={{bottom: 25,left:25}} title="Go to top">
     <svg className="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 11l7-7 7 7M5 19l7-7 7 7" />
     </svg>
-    </button>
+    </button>}
     </div>:
     <ProductEdit setEditItem={() => setEditItem()} product={editItem} categories={categories} submitProduct={(product) => editProductHandler(product)} cancelEdit={()=>setEditItem({})}/>))}
 	  </div>
