@@ -4,22 +4,28 @@ import ProductSearch from './ProductSearch';
 const NavBar = ({ logoffHandler, product, selectedCategory, searchText, addNew, changeWindow, categories, editItem }) => {
   return (
     <div>
-        <nav className="flex items-center mt-0 fixed w-full z-10 top-0 justify-between flex-wrap bg-blue-500 p-4 shadow">
-        <div className="flex items-center flex-shrink-0 text-blue-100 mr-4">
-        <svg className="h-6 w-6  mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-        <path d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" />
-        </svg>
-        <span className="font-semibold text-xl tracking-tight">Price Tag It</span>
+        <nav className="flex items-center mt-0 fixed w-full z-10 top-0 justify-between flex-wrap bg-blue-500 p-3 shadow">
+        <div class="flex w-full text-center items-center">
+          <div class="w-1/6">
+          <button onClick={changeWindow} className="focus:outline-none bg-blue-500 text-blue-100 font-bold py-2 px-2 rounded inline-flex items-center">
+          {(!addNew && !editItem) ?<svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>:
+          <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>}
+          </button>
+          </div>
+          <div class="w-2/3 text-gray-100">
+            <span className="font-semibold text-2xl tracking-tight">PRICE TAG IT</span>
+          </div>
+          <div class="w-1/6">
+          <button onClick={logoffHandler} className="pr-0 pl-0 focus:outline-none bg-blue-500 text-blue-100 font-bold py-2 px-4 rounded-full inline-flex items-center">
+          <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clipRule="evenodd" />
+          </svg></button>
+          </div>
         </div>
-        <button onClick={changeWindow} className="pr-0 pl-0 focus:outline-none bg-blue-500 text-blue-100 font-bold py-2 pr-0 rounded-full inline-flex items-center">
-        {!addNew?<svg className="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /> </svg>:
-        <svg className="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /> </svg>}
-        <span>{addNew ? 'Products':'Add New'}</span>
-        </button>
-        <button onClick={logoffHandler} className="pr-0 pl-0 focus:outline-none bg-blue-500 text-blue-100 font-bold py-2 px-4 rounded-full inline-flex items-center">
-        <svg className="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-        </svg></button>
         </nav>
         { !addNew && !editItem && <ProductSearch categories={categories} searchText={(text) => searchText(text)} selectedCategory={(category) => selectedCategory(category)}/>}
     </div>
@@ -27,3 +33,13 @@ const NavBar = ({ logoffHandler, product, selectedCategory, searchText, addNew, 
 }
 
 export default NavBar;
+
+/*
+<div className="">
+        </div>
+        <div>
+        </div>
+        </div>
+        
+        <div></div>
+*/

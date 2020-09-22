@@ -24,7 +24,7 @@ const ProductSearch = ({ searchText, categories, selectedCategory }) => {
   */
 
   return (
-    <div className='max-w-sm pt-12 mt-10 mb-4 mx-auto'>
+    <div className='max-w-sm pt-10 mt-10 mb-4 mx-auto'>
         <div className="grid grid-flow-col grid-rows-1 grid-cols-2 flex items-center border-b border-b-2 border-blue-200 mx-2 pb-4">
         <div className="relative inline-block mr-1">
         <select className="z-10 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 cursor-pointer" value={selected} onChange={event => {selectedCategory(event.target.value); setSelected(event.target.value)}}>
