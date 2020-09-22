@@ -1,18 +1,20 @@
 import React, {useState} from 'react';
 import Alert from './Alert';
 
-const ProductCreate = ({submitProduct, categories}) => {
+const ProductCreate = ({submitProduct, categories, cancelEdit}) => {
     //This one is used to reset the product submitted.
     const [emptyProduct] = useState({name: '', normal_price: '', discounted_price: '', store: '', category: ''});
     const [newProduct, setNewProduct] = useState({name: '', normal_price: '', discounted_price: '', store: '', category: ''});
     const [errorCreate, setErrorCreate] = useState(false);
     const [msg, setMsg] = useState('');
     const [successColor, setSuccessColor] = useState(false);
+    const [cancel, setCancel] = useState(false);
 
     //Sends the object to the parent component.
     const onSubmit = (e) => {
         //Prevents normal submit behaviour.
         e.preventDefault();
+        if(!cancel){
         if(newProduct.name){
         //Treat data before sending it to db
             newProduct.normal_price = parseFloat(newProduct.normal_price).toFixed(2)
@@ -29,6 +31,8 @@ const ProductCreate = ({submitProduct, categories}) => {
             setTimeout(function(){
                 setErrorCreate(false);
             },3000);
+        }}else{
+            cancelEdit();
         }
     }
 
@@ -54,6 +58,7 @@ const ProductCreate = ({submitProduct, categories}) => {
                 </svg></span></div>
             </div>
             <button className="bg-blue-500 p-2 rounded mt-10 text-gray-100 focus:outline-none">Create</button>
+            <button id="0" onClick={() => setCancel(true)} className="ml-4 bg-red-500 p-2 rounded mt-10 text-gray-100 focus:outline-none">Cancel</button>
             </form>
             {errorCreate && <Alert successColor={successColor} msg={msg}/>}
         </div>

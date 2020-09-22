@@ -144,7 +144,7 @@ return (
     {!addNew && !isLoading && products.length === 0 && <h1 className="text-5xl text-center mx-auto mt-32">Empty List</h1> }
 
     {addNew ?
-    <ProductCreate categories={categories} submitProduct={(product) => createProductHandler(product)}/>:
+    <ProductCreate categories={categories} cancelEdit={()=>setAddNew(false)} submitProduct={(product) => createProductHandler(product)}/>:
     (isLoading ? <h1 className="text-6xl text-center mx-auto mt-32">Loading...</h1>:
     (!editItem.id ? <div className="grid grid-cols-1 px-4">
     {products.filter(product => selectedCategory?
