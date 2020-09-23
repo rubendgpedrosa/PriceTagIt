@@ -1,7 +1,7 @@
 {
   "short_name": "PriceTagIt",
   "name": "Price Tag It - Discount Tracker",
-  "description": "Keep a record and track all the prices and discounts!",
+  "description": "Keep track of all your products and their discounts!",
   "icons": [
     {
       "src": "favicon.ico",
@@ -9,12 +9,12 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo.png",
+      "src": "logo192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo.png",
+      "src": "logo512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
@@ -22,6 +22,5 @@
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#4299e1",
-  "scope": "/",
   "background_color": "#ffffff"
 }
