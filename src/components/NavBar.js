@@ -27,7 +27,7 @@ const NavBar = ({ logoffHandler, product, selectedCategory, searchText, addNew, 
           </div>
         </div>
         </nav>
-        { !addNew && !editItem && <ProductSearch categories={categories} searchText={(text) => searchText(text)} selectedCategory={(category) => selectedCategory(category)}/>}
+        { !addNew && !editItem && <ProductSearch categories={categories.sort()} searchText={(text) => searchText(text)} selectedCategory={(category) => selectedCategory(category)}/>}
     </div>
   )
 }

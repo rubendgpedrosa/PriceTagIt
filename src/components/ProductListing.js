@@ -40,7 +40,7 @@ function App({loggedUser, logoffHandler}) {
       .then((result) => {
         setProducts(result);
       }).then(
-      fetch('/api/categories', 
+      await fetch('/api/categories', 
       //We use our token to authenticate every request.
       {headers: new Headers({
         'Authorization': 'Bearer ' + loggedUser, 
@@ -152,11 +152,13 @@ const topFunction = () => {
 return (
   <div>
     {/* NAVIGATION BAR AND SEARCH INPUT */}
-    {<NavBar logoffHandler={logoffHandler} categories={categories} selectedCategory={(category) => setSelectedCategory(category)} searchText={(text) => setTerm(text)} addNew={addNew} changeWindow={() => editItem.name !== undefined ?
+    {<NavBar logoffHandler={logoffHandler} categories={[...new Set( products.map(obj => obj.category)) ]} selectedCategory={(category) => setSelectedCategory(category)} searchText={(text) => setTerm(text)} addNew={addNew} changeWindow={() => editItem.name !== undefined ?
       setEditItem({}) : setAddNew(!addNew) } editItem={editItem.id !== undefined}/>}
 
 	<div className="container mx-auto bg-white h-full overflow-y-auto pb-4">
-    {!addNew && !isLoading && products.length === 0 && <h1 className="text-5xl text-center mx-auto mt-32">Empty List</h1> }
+    {!addNew && !isLoading && products.length === 0 && <div>
+      <div className="text-gray-700 text-center"><p className="text-xl font-bold pt-10 pb-2">Empty Product List</p> <span onClick={() => setAddNew(true)} className="cursor-pointer text-blue-500 underline">click here</span> or on the top left corner, to start adding products to your list.</div>
+    </div> }
 
     {addNew ?
     <ProductCreate categories={categories} cancelEdit={()=>setAddNew(false)} submitProduct={(product) => createProductHandler(product)}/>:

@@ -25,7 +25,7 @@ const LandingPage = ({ login, errorAlert }) => {
             
         <div className="flex justify-center flex-col">
         <div className="flex justify-center flex-col text-center mx-auto p-2">
-                <img className="shadow-xl mx-auto mb-6 rounded-full border-2" alt="" src="/logo.jpg" height="180" width="180"/>
+                <img className="shadow-xl mx-auto mb-6 bg-gray-100 rounded-full border-2" alt="" src="/logo_clear.png" height="200" width="200"/>
                 <p className="font-bold text-2xl text-blue-500 uppercase">Welcome to Price Tag It!</p>
                 <p className="text-gray-600 text-xl">A simple and easy way to <span className="text-blue-400">keep track</span> of all your <span className="text-blue-400">discounts</span>.</p>
                 </div>

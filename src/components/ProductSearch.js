@@ -29,7 +29,7 @@ const ProductSearch = ({ searchText, categories, selectedCategory }) => {
         <div className="relative inline-block mr-1">
         <select className="z-10 bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 cursor-pointer" value={selected} onChange={event => {selectedCategory(event.target.value); setSelected(event.target.value)}}>
           <option className="text-gray-200" value="">All Categories</option>
-          {categories.map((category, index) => <option key={index} value={category.name}>{category.name}</option>)}
+          {categories.map((category, index) => <option key={index} value={category}>{category}</option>)}
         </select>
         <span className="absolute h-full right-0 bg-blue-500 hover:text-gray-100 text-sm text-gray-100 pt-2 px-2  rounded focus:outline-none"><svg className="right-0 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
