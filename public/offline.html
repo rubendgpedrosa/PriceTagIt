@@ -16,37 +16,56 @@
                 align-items: center;
                 text-align: center;
                 justify-content: center;
+                font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             }
         
             .banner {
                 align-items: center;
-                width: 80%;
-                display: flex;
-                justify-content: center;
-                flex-direction: column;
-                padding: 40px 8%;
-                border-radius: 20px;
+                position: absolute;
+                top: 0px;
+                min-width: 100%;
+                max-width: 100%;
+                height: 15%;
                 background: #4299e1;
                 color: white;
-                font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             }
             
             .text {
                 margin-top: 0px;
+                color: #718096;
             }
 
             .h1-text {
                 margin-bottom: 2px;
+                color: #4a5568;
+            }
+
+            .foot {
+                color: white;
+                align-items: center;
+                background: #4299e1;
+                text-align: center;
+                justify-content: center;
+                min-width: 100%;
+                max-width: 100%;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                position: absolute;
+                bottom: 0px;
             }
 
         </style>
     </head>
     <body>
-        <div class="banner">
+        <div class="banner"></div>
+        <div>
             <h1 class="h1-text">Woops, seems you're offline!</h1>
             <h3 class="text">
                 <span>Please go online to start using our App.</span>
             </h2>
         </div>
+        <footer class="foot">
+            <span>Price Tag It &copy;</span>
+        </footer>
     </body>
 </html>
